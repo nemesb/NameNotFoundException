@@ -59,22 +59,47 @@ public class ActionController {
 	}
 	
 	public static void changeGates(Visitable oldGates[], Visitable newGates[]){
-		Tabulator.increaseTabNumber();
+		Tabulator.decreaseTabNumber();
 		Tabulator.tabMethod();
-		System.out.println("-> changeGates(oldGates[], newGates[])");
+		System.out.println("->  ActionController.changeGates(oldGates[], newGates[])");
 		Tabulator.tabMethod();
 		System.out.println("<- void");
-		Tabulator.decreaseTabNumber();
 
 
 	}
 	
-	public static void shoot(Visitor visitor,String color){
-		Tabulator.tabMethod();
+	public static void shoot(Visitor visitor,String color, int subID){
 		System.out.println("-> ActionController.shoot(Player,"+color+")" );
-		ActionController.changeGates(null, null);
+		Tabulator.increaseTabNumber();
+		ActionController.getNextTile(new Tile(),1); //megnézzük mi a következõ mezõ
+		switch(subID){
+		case 1: //szakadék felett
+			//Tabulator.increaseTabNumber();
+			 new Tile().accept("PortalBeam"); 
+			 new PortalBeam().visit(new Tile()); //a lövedék továbbrepül a szakadék felett
+			break;
+		case 2: //falra
+			break;
+		case 3: //dobozra
+			 new Tile().accept("PortalBeam");
+			 new PortalBeam().visit(new Tile());  //a lövedék továbbrepül a doboz felett
+			break;
+		case 4: //speciális falra
+			Tabulator.increaseTabNumber();
+			new Tile().accept("PortalBeam");
+			new PortalBeam().visit(new Tile());
+			ActionController.changeGates(null, null);  //a lövedék új csillagkaput állít be
+			break;
+		case 5: //nyitott ajtón
+			 new Tile().accept("PortalBeam"); 
+			 new PortalBeam().visit(new Tile()); //a lövedék továbbrepül a nyitott ajtón
+			break;
+		}
+		Tabulator.decreaseTabNumber();
+		Tabulator.decreaseTabNumber();
 		Tabulator.tabMethod();
 		System.out.println("<- void");
+
 	}
 
 }
