@@ -13,19 +13,19 @@ public class ActionController {
 			System.out.println("<- void");
 		break;
 		case 1: 
-				System.out.println("-> ActionController.move(Player, 1)");
-				Tabulator.increaseTabNumber();
-				Player.getVisitable();
-				new Hole().accept(new Player());
-				System.out.println("<- void");
-				System.out.println("-> endGame()");
+			System.out.println("-> ActionController.move(Player, 1)");
+			Tabulator.increaseTabNumber();
+			Player.getVisitable();
+			new Hole().accept(new Player());
+			System.out.println("<- void");
+			System.out.println("-> endGame()");
 		break;
 		case 2:
-				System.out.println("-> ActionController.move(Player, 2)");
-				Tabulator.increaseTabNumber();
-				Player.getVisitable();
-				new Wall().accept(new Player());
-				System.out.println("<- void");
+			System.out.println("-> ActionController.move(Player, 2)");
+			Tabulator.increaseTabNumber();
+			Player.getVisitable();
+			new Wall().accept(new Player());
+			System.out.println("<- void");
 		break;
 		case 3:
 			System.out.println("-> ActionController.move(Player, 3)");
