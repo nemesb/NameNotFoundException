@@ -30,10 +30,12 @@ public class Door extends Tile{
 	}
 	
 	public static void changePassable(){
+		Tabulator.increaseTabNumber();
 		Tabulator.tabMethod();
 		System.out.println("-> door.changePassable()");
 		Tabulator.tabMethod();
 		System.out.println("<- void");
+		Tabulator.decreaseTabNumber();
 	}
 
 }

@@ -44,18 +44,16 @@ public class Main {
 				caseAjtoMuveletek(scanner); //meghívódnak az ajtónyitással/csukással kapcsolatos use-case-ek
 				break;			
 			case 5:
-				Tabulator.resetTabNumber();
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseLoves(scanner);
 				break;
 			case 6:
-				Tabulator.resetTabNumber();
-				System.out.println("\n7.Csillagkapu nyitás"
-						+ "\n\t7.1 Sárga"
-						+ "\n\t7.2 Kék");
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
+				caseCsillagkapu(scanner); //meghívódnak a csillagkapu nyitással kapcsolatos use-case-ek
 				break;
 			case 7:
-				Tabulator.resetTabNumber();
-				System.out.println("\n8. ZPM"
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
+				System.out.println("\n7. ZPM"
 						+ "\n\t7.1 Felvétel"
 						+ "\n\t7.2 Lerakás");
 				break;
@@ -70,6 +68,59 @@ public class Main {
 			}while(useCaseID!=0); //menü kiírásának ismétlése ha a use-case száma nem 0
 	}
 
+	private static void caseCsillagkapu(Scanner scanner) {
+		int subID;
+		System.out.println("\n6.Csillagkapu nyitás"
+				+ "\n\t6.1 Sárga"
+				+ "\n\t6.2 Kék");
+		subID=scanner.nextInt();
+		switch(subID){
+		case 1:
+			System.out.println("\n6.Csillagkapu nyitás"
+					+ "\n\t6.1 Sárga"
+					+ "\n\t\t6.1.1 Elsõ"
+					+ "\n\t\t6.1.2 Van már"
+					+ "\n\t\t6.1.3 Féregjárat"
+					+ "\n\nÍrd be a kiválasztott use-case számát:");
+					subID=scanner.nextInt();
+					ActionController.shoot(new Player(),"sárga");
+					switch(subID){
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					default:
+						System.out.println("\nNincs ilyen almenüpont!");
+					}
+					
+			break;
+		case 2:
+			System.out.println("\n6.Csillagkapu nyitás"
+					+ "\n\t6.2 Kék"
+					+ "\n\t\t6.2.1 Elsõ"
+					+ "\n\t\t6.2.2 Van már"
+					+ "\n\t\t6.2.3 Féregjárat"
+					+ "\n\nÍrd be a kiválasztott use-case számát:");
+					subID=scanner.nextInt();
+					ActionController.shoot(new Player(),"kék");
+					switch(subID){
+					case 1:
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					default:
+						System.out.println("\nNincs ilyen almenüpont!");
+					}
+			break;
+		default:
+			System.out.println("\nNincs ilyen almenüpont!");
+		}
+	}
+
 	private static void caseLoves(Scanner scanner) {
 		int subID;
 		System.out.println("\n5.Lövés"
@@ -77,7 +128,9 @@ public class Main {
 				+ "\n\t5.2 Falra"
 				+ "\n\t5.3 Dobozra"
 				+ "\n\t5.4 Speciális falra"
-				+ "\n\t5.5 Nyitott ajtón keresztül");
+				+ "\n\t5.5 Nyitott ajtón keresztül"
+				+ "\n\nÍrd be a kiválasztott use-case számát:");
+		
 		subID=scanner.nextInt();
 		ActionController.getNextTile(new Tile(),1); //megnézzük mi a következõ mezõ
 		Tabulator.increaseTabNumber();
@@ -124,8 +177,8 @@ public class Main {
 			Player.getVisitable();
 			Tabulator.increaseTabNumber();
 			new Player().visit(new Tile());
+			Scale.setWeight();
 			Tabulator.increaseTabNumber();
-			Door.changePassable();
 			break;
 		case 2: //doboz
 			System.out.println("\n4.Ajtó kinyitása/bezárása"
@@ -152,8 +205,8 @@ public class Main {
 					}
 					Tabulator.tabMethod();
 					System.out.println("<- void");
+					Scale.setWeight();
 					Tabulator.increaseTabNumber();
-					Door.changePassable();
 			break;
 		}
 	}
