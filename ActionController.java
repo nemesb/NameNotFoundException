@@ -55,9 +55,8 @@ public class ActionController {
 
 	public static void changeVisitable(Visitable changingVisitable, Visitable newVisitable){
 		Tabulator.tabMethod();
-		System.out.println("-> ActionController.changeVisitable(nextTile,BoxedTile)");
-		Tabulator.tabMethod();
-		System.out.println("<- void");
+		System.out.print("-> ActionController.changeVisitable");
+		
 
 	}
 

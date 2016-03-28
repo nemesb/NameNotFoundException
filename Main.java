@@ -27,22 +27,20 @@ public class Main {
 
 			switch(useCaseID){
 			case 1:
-				Tabulator.resetTabNumber();
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseMozgas(scanner); //meghívódnak a mozgással kapcsolatos további use-case-ek
 				break;	
 			case 2:
-				Tabulator.resetTabNumber();
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseDobozFel(scanner); //meghívódnak a doboz felvétellel kapcsolatos további use-case-ek
 			break;
 			case 3:
-				Tabulator.resetTabNumber();
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseDobozLe(scanner); //meghívódnak a doboz lerakással kapcsolatos további use-case-ek
 				break;
 			case 4:
-				Tabulator.resetTabNumber();
-				System.out.println("\n4.Ajtó kinyitása/bezárása"
-						+ "\n\t4.1 Saját súly"
-						+ "\n\t4.2 Doboz");
+				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
+				caseAjtoMuveletek(scanner); //meghívódnak az ajtónyitással/csukással kapcsolatos use-case-ek
 				break;
 			case 5:
 				Tabulator.resetTabNumber();
@@ -82,12 +80,62 @@ public class Main {
 			}while(useCaseID!=0); //menü kiírásának ismétlése ha a use-case száma nem 0
 	}
 
+	private static void caseAjtoMuveletek(Scanner scanner) {
+		int subID;
+		System.out.println("\n4.Ajtó kinyitása/bezárása"
+				+ "\n\t4.1 Saját súly"
+				+ "\n\t4.2 Doboz");
+		subID=scanner.nextInt();
+		switch(subID){
+		case 1: //saját súly
+			System.out.println("\n4.Ajtó kinyitása/bezárása"
+					+ "\n\t4.1 Saját súly"
+					+ "\n\t\t4.1.1 Nyitás"
+					+ "\n\t\t4.1.2 Bezárás"
+					+ "\n\nÍrd be a kiválasztott use-case számát:");
+			
+			subID=scanner.nextInt();
+			Player.getVisitable();
+			Tabulator.increaseTabNumber();
+			new Player().visit(new Tile());
+			Tabulator.increaseTabNumber();
+			Door.changePassable();
+			break;
+		case 2: //doboz
+			System.out.println("\n4.Ajtó kinyitása/bezárása"
+					+ "\n\t4.2 Doboz"
+					+ "\n\t\t4.2.1 Nyitás"
+					+ "\n\t\t4.2.2 Bezárás"
+					+ "\n\nÍrd be a kiválasztott use-case számát:");
+					subID=scanner.nextInt();
+					switch(subID){
+					case 1: //nyitás
+						Player.changeBox();
+						Tabulator.increaseTabNumber();
+						ActionController.changeVisitable(new Tile(),new Tile());
+						System.out.print("(currentCleanTile,boxedTile)\n");
+						break;
+					case 2: //bezárás
+						Player.changeBox();
+						Tabulator.increaseTabNumber();
+						ActionController.changeVisitable(new Tile(),new Tile());
+						System.out.print("(currentBoxedTile,cleanTile)\n");
+						break;
+					}
+					Tabulator.tabMethod();
+					System.out.println("<- void");
+					Tabulator.increaseTabNumber();
+					Door.changePassable();
+			break;
+		}
+	}
+
 	private static void caseDobozLe(Scanner scanner) {
 		int subID;
 		System.out.println("\n3.Doboz lerakása"
 				+ "\n\t3.1 Van a játékosnál doboz"
 				+ "\n\t3.2 Nincs a játékosnál doboz"
-		+ "\n\nAdd meg a kiválasztott almenüpont számát:");
+				+ "\n\nAdd meg a kiválasztott almenüpont számát:");
 		subID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
 		switch(subID){
 		case 1: //Ha van a játékosnál doboz
@@ -111,6 +159,9 @@ public class Main {
 				Player.changeBox();
 				Tabulator.increaseTabNumber();
 				ActionController.changeVisitable(new Tile(),new Tile());
+				System.out.print("(nextTile,boxedTile)\n");
+				Tabulator.tabMethod();
+				System.out.println("<- void");
 				break;
 			case 2: //szakadékra
 				Tabulator.decreaseTabNumber();
@@ -169,12 +220,16 @@ public class Main {
 			//new Player().visit(new Tile());
 			Tabulator.decreaseTabNumber();
 			switch(subID){
-			case 1:
+			case 1: //van doboz
 				System.out.println("<- true");
 				Tabulator.increaseTabNumber();
 				Player.changeBox();
+				ActionController.changeVisitable(new Tile(),new Tile());
+				System.out.print("(nextTile,cleanTile)\n");
+				Tabulator.tabMethod();
+				System.out.println("<- void");
 				break;
-			case 2:
+			case 2: //nincs doboz
 				System.out.println("<- false");
 				break;
 			}
@@ -194,19 +249,19 @@ public class Main {
 		subID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
 		switch(subID){
 		case 1:
-		    ActionController.move(new Player(),0);
+		    ActionController.move(new Player(),0); //üres mezõre lép
 			break;
 		case 2:
-		    ActionController.move(new Player(),1);
+		    ActionController.move(new Player(),1); //szakadékra lép
 			break;
 		case 3:
-		    ActionController.move(new Player(),2);
+		    ActionController.move(new Player(),2); //falra próbál lépni
 			break;
 		case 4:
-		    ActionController.move(new Player(),3);
+		    ActionController.move(new Player(),3); //zárt ajtóra próbál lépni
 		    break;
 		case 5:
-		    ActionController.move(new Player(),4);
+		    ActionController.move(new Player(),4); //nyílt ajtóra lép
 		    break;
 		default:
 			System.out.println("\nNincs ilyen almenüpont!");
