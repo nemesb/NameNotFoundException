@@ -19,7 +19,7 @@ public class Main {
 					+ "\n4.Ajtó kinyitása/bezárása"
 					+ "\n5.Lövés"
 					+ "\n6.Csillagkapu nyitás"
-					+ "\n7.ZPM"
+					+ "\n7.ZPM felvétel"
 					+ "\n\nÍrd be a kiválasztott use-case számát:");
 			
 			useCaseID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
@@ -53,9 +53,7 @@ public class Main {
 				break;
 			case 7:
 				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
-				System.out.println("\n7. ZPM"
-						+ "\n\t7.1 Felvétel"
-						+ "\n\t7.2 Lerakás");
+				caseZPM();//meghívódnak a ZPM felvétellel kapcsolatos use-case-ek
 				break;
 			default:
 				Tabulator.resetTabNumber();
@@ -66,6 +64,11 @@ public class Main {
 			System.in.read(); //enterre várunk mielõtt újra megjelenne a menü
 			
 			}while(useCaseID!=0); //menü kiírásának ismétlése ha a use-case száma nem 0
+	}
+
+	private static void caseZPM() {
+		ActionController.move(new Player(), 0);
+		Player.addZPM();
 	}
 
 	private static void caseCsillagkapu(Scanner scanner) {
@@ -80,7 +83,7 @@ public class Main {
 					+ "\n\t6.1 Sárga"
 					+ "\n\t\t6.1.1 Elsõ"
 					+ "\n\t\t6.1.2 Van már"
-					+ "\n\t\t6.1.3 Féregjárat"
+					//+ "\n\t\t6.1.3 Féregjárat"
 					+ "\n\nÍrd be a kiválasztott use-case számát:");
 					subID=scanner.nextInt();
 					ActionController.shoot(new Player(),"sárga");
@@ -89,8 +92,8 @@ public class Main {
 						break;
 					case 2:
 						break;
-					case 3:
-						break;
+					//case 3:
+					//	break;
 					default:
 						System.out.println("\nNincs ilyen almenüpont!");
 					}
@@ -101,7 +104,7 @@ public class Main {
 					+ "\n\t6.2 Kék"
 					+ "\n\t\t6.2.1 Elsõ"
 					+ "\n\t\t6.2.2 Van már"
-					+ "\n\t\t6.2.3 Féregjárat"
+					//+ "\n\t\t6.2.3 Féregjárat"
 					+ "\n\nÍrd be a kiválasztott use-case számát:");
 					subID=scanner.nextInt();
 					ActionController.shoot(new Player(),"kék");
@@ -110,8 +113,8 @@ public class Main {
 						break;
 					case 2:
 						break;
-					case 3:
-						break;
+					//case 3:
+					//	break;
 					default:
 						System.out.println("\nNincs ilyen almenüpont!");
 					}
@@ -340,7 +343,7 @@ public class Main {
 		subID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
 		switch(subID){
 		case 1:
-		    ActionController.move(new Player(),0); //üres mezõre lép
+		    caseZPM();
 			break;
 		case 2:
 		    ActionController.move(new Player(),1); //szakadékra lép

@@ -43,4 +43,11 @@ public class Player implements Visitor{
 		System.out.println("<- void");
 
 	}
+	
+	public static void addZPM(){
+		Tabulator.tabMethod();
+		System.out.println("-> Player.addZPM()");
+		Tabulator.tabMethod();
+		System.out.println("<- void");
+	}
 }
