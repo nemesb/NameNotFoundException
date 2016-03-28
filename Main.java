@@ -98,10 +98,8 @@ public class Main {
 			
 			subID=scanner.nextInt();
 			Player.getVisitable();
-			Tabulator.increaseTabNumber();
 			new Player().visit(new Tile());
 			Scale.setWeight();
-			Tabulator.increaseTabNumber();
 			break;
 		case 2: //doboz
 			System.out.println("\n4.Ajtó kinyitása/bezárása"
@@ -128,8 +126,8 @@ public class Main {
 					}
 					Tabulator.tabMethod();
 					System.out.println("<- void");
+					Tabulator.decreaseTabNumber();
 					Scale.setWeight();
-					Tabulator.increaseTabNumber();
 			break;
 		}
 	}
@@ -161,7 +159,6 @@ public class Main {
 			case 1: //üres mezõre
 				Tabulator.decreaseTabNumber();
 				Player.changeBox();
-				Tabulator.increaseTabNumber();
 				ActionController.changeVisitable(new Tile(),new Tile());
 				System.out.print("(nextTile,boxedTile)\n");
 				Tabulator.tabMethod();
@@ -178,7 +175,6 @@ public class Main {
 			case 5: //nyitott ajtóra
 				Tabulator.decreaseTabNumber();
 				Player.changeBox();
-				Tabulator.increaseTabNumber();
 				ActionController.changeVisitable(new Tile(),new Tile());
 				break;
 			default:
