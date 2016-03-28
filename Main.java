@@ -90,6 +90,15 @@ public class Main {
 		case 2:
 		    ActionController.move(new Player(),1);
 			break;
+		case 3:
+		    ActionController.move(new Player(),2);
+			break;
+		case 4:
+		    ActionController.move(new Player(),3);
+		    break;
+		case 5:
+		    ActionController.move(new Player(),4);
+		    break;
 		default:
 			System.out.println("\nNincs ilyen almenüpont!");
 		}
