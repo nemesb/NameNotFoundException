@@ -17,8 +17,17 @@ public class Player implements Visitor{
 	}
 	
 	public static Boolean getBox(){
+		Tabulator.tabMethod();
 		System.out.println("-> Player.getBox()");
 		return null;
 		
+	}
+	
+	public static void changeBox(){
+		Tabulator.tabMethod();
+		System.out.println("-> Player.changeBox()");
+		Tabulator.tabMethod();
+		System.out.println("<- void");
+
 	}
 }

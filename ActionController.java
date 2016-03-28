@@ -41,11 +41,24 @@ public class ActionController {
 			new Door(false).accept(new Player());
 			System.out.println("<- void");
 		break;
-		}
-
-		
+		}		
 	}
 	
-	
+	public static Visitable getNextTile(Visitable currentTile,int direction){
+		Tabulator.tabMethod();
+		System.out.println("-> ActionController.getNextVisitable(currentTile,1)");
+		Tabulator.tabMethod();
+		System.out.println("<- Visitable nextTile");
+		
+		return null;
+		}
+
+	public static void changeVisitable(Visitable changingVisitable, Visitable newVisitable){
+		Tabulator.tabMethod();
+		System.out.println("-> ActionController.changeVisitable(nextTile,BoxedTile)");
+		Tabulator.tabMethod();
+		System.out.println("<- void");
+
+	}
 
 }
