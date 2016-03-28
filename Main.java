@@ -17,15 +17,16 @@ public class Main {
 					+ "\n2.Doboz felvétele"
 					+ "\n3.Doboz lerakása"
 					+ "\n4.Ajtó kinyitása/bezárása"
-					+ "\n5.Közlekedés ajtón"
-					+ "\n6.Lövés"
-					+ "\n7.Csillagkapu nyitás"
-					+ "\n8.ZPM"
+					+ "\n5.Lövés"
+					+ "\n6.Csillagkapu nyitás"
+					+ "\n7.ZPM"
 					+ "\n\nÍrd be a kiválasztott use-case számát:");
 			
 			useCaseID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
 
 			switch(useCaseID){
+			case 0:
+				break;
 			case 1:
 				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseMozgas(scanner); //meghívódnak a mozgással kapcsolatos további use-case-ek
@@ -41,29 +42,18 @@ public class Main {
 			case 4:
 				Tabulator.resetTabNumber(); //lenullázzuk a tabulátorok számát
 				caseAjtoMuveletek(scanner); //meghívódnak az ajtónyitással/csukással kapcsolatos use-case-ek
-				break;
+				break;			
 			case 5:
 				Tabulator.resetTabNumber();
-				System.out.println("\n5.Közlekedés ajtón"
-						+ "\n\t5.1 Zárt"
-						+ "\n\t5.2 Nyitott");
+				caseLoves(scanner);
 				break;
 			case 6:
-				Tabulator.resetTabNumber();
-				System.out.println("\n6.Lövés"
-						+ "\n\t6.1 Szakadék felett"
-						+ "\n\t6.2 Falra"
-						+ "\n\t6.3 Dobozra"
-						+ "\n\t6.4 Speciális falra"
-						+ "\n\t6.5 Nyitott ajtón keresztül");
-				break;
-			case 7:
 				Tabulator.resetTabNumber();
 				System.out.println("\n7.Csillagkapu nyitás"
 						+ "\n\t7.1 Sárga"
 						+ "\n\t7.2 Kék");
 				break;
-			case 8:
+			case 7:
 				Tabulator.resetTabNumber();
 				System.out.println("\n8. ZPM"
 						+ "\n\t7.1 Felvétel"
@@ -78,6 +68,42 @@ public class Main {
 			System.in.read(); //enterre várunk mielõtt újra megjelenne a menü
 			
 			}while(useCaseID!=0); //menü kiírásának ismétlése ha a use-case száma nem 0
+	}
+
+	private static void caseLoves(Scanner scanner) {
+		int subID;
+		System.out.println("\n5.Lövés"
+				+ "\n\t5.1 Szakadék felett"
+				+ "\n\t5.2 Falra"
+				+ "\n\t5.3 Dobozra"
+				+ "\n\t5.4 Speciális falra"
+				+ "\n\t5.5 Nyitott ajtón keresztül");
+		subID=scanner.nextInt();
+		ActionController.getNextTile(new Tile(),1); //megnézzük mi a következõ mezõ
+		Tabulator.increaseTabNumber();
+		switch(subID){
+		case 1: //szakadék felett
+			 new Tile().accept("PortalBeam"); 
+			 new PortalBeam().visit(new Tile()); //a lövedék továbbrepül a szakadék felett
+			break;
+		case 2: //falra
+			break;
+		case 3: //dobozra
+			 new Tile().accept("PortalBeam");
+			 new PortalBeam().visit(new Tile());  //a lövedék továbbrepül a doboz felett
+			break;
+		case 4: //speciális falra
+			new Tile().accept("PortalBeam");
+			new PortalBeam().visit(new Tile());
+			ActionController.changeGates(null, null);  //a lövedék új csillagkaput állít be
+			break;
+		case 5: //nyitott ajtón
+			 new Tile().accept("PortalBeam"); 
+			 new PortalBeam().visit(new Tile()); //a lövedék továbbrepül a nyitott ajtón
+			break;
+		default:
+			System.out.println("\nNincs ilyen almenüpont!");
+		}
 	}
 
 	private static void caseAjtoMuveletek(Scanner scanner) {
@@ -121,6 +147,8 @@ public class Main {
 						ActionController.changeVisitable(new Tile(),new Tile());
 						System.out.print("(currentBoxedTile,cleanTile)\n");
 						break;
+					default:
+						System.out.println("\nNincs ilyen almenüpont!");
 					}
 					Tabulator.tabMethod();
 					System.out.println("<- void");
@@ -167,12 +195,18 @@ public class Main {
 				Tabulator.decreaseTabNumber();
 				Player.changeBox();
 				break;
+			case 3: //falra
+				break;
+			case 4: //zárt ajtóra
+				break;
 			case 5: //nyitott ajtóra
 				Tabulator.decreaseTabNumber();
 				Player.changeBox();
 				Tabulator.increaseTabNumber();
 				ActionController.changeVisitable(new Tile(),new Tile());
 				break;
+			default:
+				System.out.println("\nNincs ilyen almenüpont!");
 			}
 		
 			break;
@@ -232,8 +266,12 @@ public class Main {
 			case 2: //nincs doboz
 				System.out.println("<- false");
 				break;
+			default:
+				System.out.println("\nNincs ilyen almenüpont!");
 			}
 			break;
+		default:
+			System.out.println("\nNincs ilyen almenüpont!");
 		}
 	}
 

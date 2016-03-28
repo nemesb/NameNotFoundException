@@ -56,7 +56,14 @@ public class ActionController {
 	public static void changeVisitable(Visitable changingVisitable, Visitable newVisitable){
 		Tabulator.tabMethod();
 		System.out.print("-> ActionController.changeVisitable");
-		
+	}
+	
+	public static void changeGates(Visitable oldGates[], Visitable newGates[]){
+		Tabulator.increaseTabNumber();
+		Tabulator.tabMethod();
+		System.out.println("-> changeGates(oldGates[], newGates[])");
+		Tabulator.tabMethod();
+		System.out.println("<- void");
 
 	}
 
