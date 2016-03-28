@@ -44,7 +44,7 @@ public class ActionController {
 		}		
 	}
 	
-	public static Visitable getNextTile(Visitable currentTile,int direction){
+	public static Visitable getNextVisitable(Visitable currentTile,int direction){
 		Tabulator.tabMethod();
 		System.out.println("-> ActionController.getNextVisitable(currentTile,1)");
 		Tabulator.tabMethod();
@@ -71,7 +71,7 @@ public class ActionController {
 	public static void shoot(Visitor visitor,String color, int subID){
 		System.out.println("-> ActionController.shoot(Player,"+color+")" );
 		Tabulator.increaseTabNumber();
-		ActionController.getNextTile(new Tile(),1); //megnézzük mi a következõ mezõ
+		ActionController.getNextVisitable(new Tile(),1); //megnézzük mi a következõ mezõ
 		switch(subID){
 		case 1: //szakadék felett
 			//Tabulator.increaseTabNumber();

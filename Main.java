@@ -153,7 +153,7 @@ public class Main {
 			Player.getBox();
 			System.out.println("<- true"); //megtudjuk, hogy van a felhasználónál doboz
 			Tabulator.increaseTabNumber();
-			ActionController.getNextTile(new Tile(),1); //megnézzük milyen típusú a következõ mezõ
+			ActionController.getNextVisitable(new Tile(),1); //megnézzük milyen típusú a következõ mezõ
 			
 			switch(subID){
 			case 1: //üres mezõre
@@ -259,7 +259,7 @@ public class Main {
 		subID=scanner.nextInt(); //beolvassuk a kiválasztott use-case számát
 		switch(subID){
 		case 1:
-		    caseZPM();
+			ActionController.move(new Player(),0); //szakadékra lép
 			break;
 		case 2:
 		    ActionController.move(new Player(),1); //szakadékra lép
