@@ -36,4 +36,13 @@ public class Player implements Visitor{
 	public static void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
 		/* Itt még új ZPM-et is kell csináltatni minden második ZPM felvételnél*/
 	}
+	
+	public int getRow(){
+		return coordinates[0];
+	}
+	
+	public int getColumn(){
+		return coordinates[1];
+	}
+	
 }

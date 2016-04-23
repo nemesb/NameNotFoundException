@@ -24,4 +24,7 @@ public class Scale extends Tile{
 
 	}
 	
+	public int getID(){ //Visszaadja a mérleg azonosítóját
+		return scaleID; 	
+	}
 }

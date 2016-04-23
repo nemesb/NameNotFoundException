@@ -8,12 +8,17 @@ import java.util.Scanner;
 public class Main {
 		
 	public static void main(String[] args) throws IOException, FileNotFoundException{	   
-	    System.out.println("Ez a pályád:\n");
+	    System.out.print("Ez a pályád:");
 	    
 	    Game game = new Game();
 	    game.run();
 
-		System.out.print("\n\nAdj meg egy parancsot: ");
-
+	    Scanner scanner = new Scanner(System.in);
+	    
+		do{
+		    System.out.println("\n");
+			game.ac.getMap();
+			System.out.print("\nAdj meg egy parancsot: ");
+		}while(!scanner.next().equals("exit"));
 	}
 }

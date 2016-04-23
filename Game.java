@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Game {
 	
-	private ActionController ac;
+	protected ActionController ac;
 
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
@@ -19,14 +19,14 @@ public class Game {
 	    scanner.useDelimiter(",");
 	    System.out.print(" ");  
 	    
-	    int rowCount=scanner.nextInt();
-	    int columnCount=scanner.nextInt();
-	    
-		ac.visitables​=new Tile[rowCount+1][columnCount];
+	    ac.rows=scanner.nextInt();
+	    ac.columns=scanner.nextInt();
+	    scanner.next();
+
+		ac.visitables​=new Tile[ac.rows][ac.columns];
 
 	    while(scanner.hasNext()){
 	       String temp=scanner.next();
-	       System.out.print(temp+" ");  
 	       
 	       if(temp.contains(System.getProperty("line.separator"))){
 	    	   row++;
@@ -78,8 +78,6 @@ public class Game {
 	    }
 	    scanner.close();
 	    
-	    System.out.println("\n\n O'Neill helye: " + ac.players[0].coordinates[0]+" "+ ac.players[0].coordinates[1]);
-
 	}
 	
 	public void play(){	//​Meghívásakor elindul a játék. Innentől kezdve az ActionController feladata a bemenetek kezelése.
