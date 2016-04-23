@@ -11,17 +11,21 @@ public class Game {
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
 		ac=new ActionController();
-		ac.visitables​=new Tile[100][100];
+
 		int column=0;
 		int row=0;
 		
 		Scanner scanner = new Scanner(new File("level1.csv"));
 	    scanner.useDelimiter(",");
 	    System.out.print(" ");  
+	    
+	    int rowCount=scanner.nextInt();
+	    int columnCount=scanner.nextInt();
+	    
+		ac.visitables​=new Tile[rowCount+1][columnCount];
 
 	    while(scanner.hasNext()){
 	       String temp=scanner.next();
-	       if(!temp.equals(""))
 	       System.out.print(temp+" ");  
 	       
 	       if(temp.contains(System.getProperty("line.separator"))){
