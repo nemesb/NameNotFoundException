@@ -45,13 +45,13 @@ public class Game {
 		       		case 'O':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray[] ={row,column};
-		       			ac.players[0]=tempArray;
+		       			ac.players[0].coordinates=tempArray;
 		       			column++;
 		       			break;
 		       		case 'J':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray2[] ={row,column};
-		       			ac.players[1]=tempArray2;
+		       			ac.players[1].coordinates=tempArray2;
 		       			column++;
 		       			break;
 		       		case 'D':

@@ -7,7 +7,8 @@ public class Player implements Visitor{
 	private Boolean hasBox; //​Azt jegyzi, hogy van a felhasználónál doboz, vagy nincs.
 	private Tile tile; //Azt a Tile­t tárolja, amelyiken a felhasználó karaktere éppen áll.
 	private int collectedZPMs; //​Azért felel, hogy az összegyűjtött elemeket ZPMeket számontartsa.
-	
+	int coordinates[]=new int[2];
+			
 	public static Visitable getVisitable(){ //megadja, hogy mi a következő mező
 		
 		return null;
@@ -23,7 +24,7 @@ public class Player implements Visitor{
 		
 	}
 	
-	public static void setVisitable(Visitable visitable){ //beállítja a következő mezőt
+	public void setVisitable(Visitable visitable){ //beállítja a következő mezőt
 		
 	}
 	
@@ -33,6 +34,6 @@ public class Player implements Visitor{
 	}
 	
 	public static void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
-		/* Itt még új ZPM-et és kell csináltatni minden második ZPM felvételnél*/
+		/* Itt még új ZPM-et is kell csináltatni minden második ZPM felvételnél*/
 	}
 }

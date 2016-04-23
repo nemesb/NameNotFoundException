@@ -2,7 +2,7 @@ package projlab;
 
 public class ActionController {
 	
-	protected int[][] players=new int[2][2]; 	//A két játékos tárolására szolgáló tömb.
+	protected Player players[]=new Player[2]; 	//A két játékos tárolására szolgáló tömb.
 	protected Tile[][] visitables​;	 //A pályán lévő elemeket tároló tömb.
 	protected Visitor replicator​; 	//A replikátor helyét jegyzi.
 	int countZPMs; 	//​A pályán lévő ZPM­ek számát jegyzi.
