@@ -10,13 +10,8 @@ public class Main {
 	public static void main(String[] args) throws IOException, FileNotFoundException{	   
 	    System.out.println("Ez a pályád:\n");
 	    
-	    Scanner scanner = new Scanner(new File("level1.csv"));
-        scanner.useDelimiter(",");
-        while(scanner.hasNext()){
-            System.out.print(scanner.next()+" "); 
-           
-        }
-        scanner.close();
+	    Game game = new Game();
+	    game.run();
 
 		System.out.print("\n\nAdj meg egy parancsot: ");
 
