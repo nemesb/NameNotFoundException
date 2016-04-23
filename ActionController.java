@@ -3,7 +3,7 @@ package projlab;
 public class ActionController {
 	
 	private Visitor[] players​; 	//A két játékos tárolására szolgáló tömb.
-	private Visitable[] visitables​;	 //A pályán lévő elemeket tároló tömb.
+	private Visitable[][] visitables​;	 //A pályán lévő elemeket tároló tömb.
 	private Visitor replikator​; 	//A replikátor helyét jegyzi.
 	int countZPMs; 	//​A pályán lévő ZPM­ek számát jegyzi.
 	Visitable additionalStoredVisitable​;	 //A funkciók végrehajtását megkönnyítő plusz attribútum.
