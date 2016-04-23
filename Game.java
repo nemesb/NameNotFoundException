@@ -45,12 +45,14 @@ public class Game {
 		       		case 'O':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray[] ={row,column};
+		       			ac.players[0]=new Player();
 		       			ac.players[0].coordinates=tempArray;
 		       			column++;
 		       			break;
 		       		case 'J':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray2[] ={row,column};
+		       			ac.players[1]=new Player();
 		       			ac.players[1].coordinates=tempArray2;
 		       			column++;
 		       			break;
@@ -72,7 +74,7 @@ public class Game {
 	    }
 	    scanner.close();
 	    
-	    System.out.println("\n\n" + ((Scale) ac.visitables​[1][4]).getWeightLimit());
+	    System.out.println("\n\n O'Neill helye: " + ac.players[0].coordinates[0]+" "+ ac.players[0].coordinates[1]);
 
 	}
 	
