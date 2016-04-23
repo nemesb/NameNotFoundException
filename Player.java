@@ -2,52 +2,37 @@ package projlab;
 
 public class Player implements Visitor{
 	
-	public static Visitable getVisitable(){
-		Tabulator.tabMethod();
-		System.out.println("-> Player.getVisitable()");
-		Tabulator.tabMethod();
-		System.out.println("<- Visitable nextTile");
+	private String name; //​Játékos neve
+	private int direction; //​A játékos irányát tárolja.
+	private Boolean hasBox; //​Azt jegyzi, hogy van a felhasználónál doboz, vagy nincs.
+	private Tile tile; //Azt a Tile­t tárolja, amelyiken a felhasználó karaktere éppen áll.
+	private int collectedZPMs; //​Azért felel, hogy az összegyűjtött elemeket ZPMeket számontartsa.
+	
+	public static Visitable getVisitable(){ //megadja, hogy mi a következő mező
+		
 		return null;
 	}
-	public void visit(Visitable visitable) {
-		Tabulator.increaseTabNumber();
-		Tabulator.tabMethod();
-		System.out.println("-> Player.visit(nextTile)");
-		Player.setVisitable();
-		Tabulator.tabMethod();
-		System.out.println("<- void");
+	public void visit(Visitable visitable) { //meglátogatja az adott mezőt
+		
 		
 	}
 	
-	public static Boolean getBox(){
-		Tabulator.tabMethod();
-		System.out.println("-> Player.getBox()");
+	public static Boolean getBox(){ //megmondja hány doboz van a játékosnál
+		
 		return null;
 		
 	}
 	
-	public static void setVisitable(){
-		Tabulator.increaseTabNumber();
-		Tabulator.tabMethod();
-		System.out.println("-> Player.setVisitable(nextTile)");
-		Tabulator.tabMethod();
-		System.out.println("<- void");
-		Tabulator.decreaseTabNumber();
+	public static void setVisitable(Visitable visitable){ //beállítja a következő mezőt
+		
+	}
+	
+	public static void changeBox(){ //megváltoztatja, hogy van-e épp doboz a játékosnál
+		
 
 	}
 	
-	public static void changeBox(){
-		Tabulator.tabMethod();
-		System.out.println("-> Player.changeBox()");
-		Tabulator.tabMethod();
-		System.out.println("<- void");
-
-	}
-	
-	public static void addZPM(){
-		Tabulator.tabMethod();
-		System.out.println("-> Player.addZPM()");
-		Tabulator.tabMethod();
-		System.out.println("<- void");
+	public static void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
+		/* Itt még új ZPM-et és kell csináltatni minden második ZPM felvételnél*/
 	}
 }

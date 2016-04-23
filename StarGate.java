@@ -1,17 +1,15 @@
 package projlab;
 
 public class StarGate extends Tile{
-	Boolean passable;
+	
+	private Tile[] tiles; 	//​Eltárolja a mező szomszédjait.
+	Boolean passable;	//Eltárolja, hogy átjárható-e az adott csillagkapu.
 	
 	public Boolean isPassable(){
 		return passable;
 	}
 	
-	public Boolean changePassable(){
-		Tabulator.tabMethod();
-		System.out.println("-> StarGate.changePassable()");
-		Tabulator.tabMethod();
-		System.out.println("<- void");
-		return null;
+	public void changePassable(){
+		passable=!passable;
 	}
 }
