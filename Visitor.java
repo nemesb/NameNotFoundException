@@ -1,5 +1,5 @@
 package projlab;
 
 public interface Visitor {
-public void visit(Visitable visitable);
+	public void visit(Visitable visitable);
 }

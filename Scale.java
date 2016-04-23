@@ -1,13 +1,18 @@
 package projlab;
 
 public class Scale extends Tile{
-	Boolean hasWeight;
-	public static void setWeight(){
-		Tabulator.decreaseTabNumber();
-		Tabulator.tabMethod();
-		System.out.println("-> Scale.setWeight()");
-		Door.changePassable();
-		Tabulator.tabMethod();
-		System.out.println("<- void");
+	
+	private Tile[] tiles; 	//​Eltárolja a mező szomszédjait.
+	private Tile door​;	 //Eltárolja melyik ajtó tartozik a mérleghez.
+	private int currentWeight; 	//​Eltárolja mennyi súly van a mérlegen.
+	private int weightLimit​;	 //Eltárolja mennyi súlyt kell a mérlegre helyezni az ajtó kinyitásához.
+	
+	public static void setWeight(){ 	//Növeli a mérlegen lévő súlyt.
+
 	}
+	
+	public static void getWeight(){ 	//Megadja a jelenleg a mérlegen lévő súlyt.
+
+	}
+	
 }
