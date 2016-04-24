@@ -9,6 +9,7 @@ public class ActionController {
 												// szolgáló tömb.
 	protected Tile[][] visitables​; // A pályán lévő elemeket tároló tömb.
 	protected Visitor replicator​; // A replikátor helyét jegyzi.
+	PortalBeam[] beams;
 	int countZPMs; // ​A pályán lévő ZPM­ek számát jegyzi.
 	Visitable additionalStoredVisitable​; // A funkciók végrehajtását
 											// megkönnyítő plusz attribútum.
@@ -167,16 +168,39 @@ public class ActionController {
 
 	}
 
-	public static void shoot(Visitor visitor, String color) { // az adott
-																// visitor adott
-																// színű
-																// lövedéket lő
-																// ki
+	public void shoot(Player visitor,String color){ //az adott visitor adott színű lövedéket lő ki
+		 		boolean alive=true;
+		  		PortalBeam beam= new PortalBeam();
+		  		beam.changeColor(color);
+		  		beam.coordinates=new int[2];
+		  		beam.coordinates=visitor.coordinates;
+		  		beam.setDirection(visitor.getDirection());
+		  		switch(color){
+		  		case "blue":
+		  			beams[0]=beam;
+		  			break;
+		  		case "red":
+		  			beams[1]=beam;
+		  			break;	
+		  		case "green":
+		  			beams[2]=beam;
+		  			break;
+		  		case "yellow":
+		  			beams[3]=beam;
+		  			break;
+		  		}		 		
+		  	}
 
+	private void move(PortalBeam beam) {
+		beam.coordinates=getNextVisitable(beam.coordinates,beam.getDirection()).coordinates;
 	}
 
 	public void getMap() {
 		
+		for(int i=0;i<4;i++){ 
+		if(beams[i]!=null&&beams[i].coordinates[0]<rows-1&&beams[i].coordinates[1]<columns-1)
+			move(beams[i]); //mozgatja a pályán lévő lövedékeket
+		}
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				switch (visitables​[i][j].getClass().getSimpleName()) {
@@ -224,7 +248,18 @@ public class ActionController {
 						System.out.print("B,");
 					break;
 				case "CleanTile":
-					if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+					int b=0;
+					Boolean hasBeam=false;
+
+					while(b<4){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							hasBeam=true;
+						}
+						b++;
+					}
+					if(hasBeam)
+						System.out.print("*,");
+					else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
 						System.out.print("O,");
 					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
 						System.out.print("J,");

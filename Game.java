@@ -27,7 +27,10 @@ public class Game {
 		ac.starGates​=new StarGate[4]; //Létrehozzuk a csillagkapukat eltároló tömböt
 		for(int i=0;i<4;i++)
 			ac.starGates​[i]=null;
-		
+		ac.beams=new PortalBeam[4]; //Létrehozzuk a lövedékeket eltároló tömböt
+		for(int i=0;i<4;i++)
+			ac.beams[i]=null;
+				
 	    while(scanner.hasNext()){
 	       String temp=scanner.next();
 	       
@@ -188,6 +191,13 @@ public class Game {
 			case "5":
 				ac.boxing(ac.players[0]);
 				break;
+			/*Ezredes lövés*/
+			case "+r":
+				ac.shoot(ac.players[0], "red");
+				break;
+			case "+b":
+				ac.shoot(ac.players[0], "blue");
+				break;
 			/*Jaffa mozgatása*/
 			case "a": //balra
 				if(ac.players[1]!=null)
@@ -205,6 +215,16 @@ public class Game {
 				if(ac.players[1]!=null)
 					ac.move(ac.players[1],3);
 				break;
+			/*Jaffa dobozfelvétele*/
+			case "e":
+				ac.boxing(ac.players[0]);
+				break;
+			/*Jaffa lövés*/
+			case "+g":
+				ac.shoot(ac.players[1], "gree");
+				break;
+			case "+y":
+				ac.shoot(ac.players[1], "yellow");
 			}
 		}while(!(temp.equals("exit")));
 	}
