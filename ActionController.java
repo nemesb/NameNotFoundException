@@ -32,36 +32,60 @@ public class ActionController {
 		}
 			
 		if (!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
+				&&!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("SpecialWall"))
 				&& (!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
 						|| ((Door) visitables​[t[0]][t[1]]).isPassable())) {
 
-			if (visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale")) {
-				((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).setWeight(-4);
-				if (((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
-						.getWeight() < ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
-								.getWeightLimit()) {
-					int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
-					((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+				if (visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale")) {
+					((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).setWeight(-4);
+					if (((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
+							.getWeight() < ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
+									.getWeightLimit()) {
+						int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
+						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+					}
+				}
+				if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("CleanTile")
+						&&((CleanTile)visitables​[t[0]][t[1]]).getZPM()){
+					
+					((CleanTile)visitables​[t[0]][t[1]]).changeZPM();
+					player.addZPM();
+					if(player==players[0])
+						ZPMcreator(player);
+				}
+				 if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("StarGate")){
+					switch( ((StarGate)visitables​[t[0]][t[1]]).getColor() ){
+					case "blue":
+						if(starGates​[1]!=null)
+							t = starGates​[1].coordinates;
+						break;
+					case "red":
+						if(starGates​[0]!=null)
+							t = starGates​[0].coordinates;
+						break;	
+					case "green":
+						if(starGates​[3]!=null)
+							t = starGates​[3].coordinates;
+						break;
+					case "yellow":
+						if(starGates​[2]!=null)
+							t = starGates​[2].coordinates;
+						break;
+					
 				}
 			}
-			if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("CleanTile")
-					&&((CleanTile)visitables​[t[0]][t[1]]).getZPM()){
-				
-				((CleanTile)visitables​[t[0]][t[1]]).changeZPM();
-				player.addZPM();
-				if(player==players[0])
-					ZPMcreator(player);
+		
+				if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale")) {
+					((Scale) visitables​[t[0]][t[1]]).setWeight(4);
+					if (((Scale) visitables​[t[0]][t[1]]).getWeight() >= ((Scale) visitables​[t[0]][t[1]]).getWeightLimit()) {
+						int[] tempDoor = ((Scale) visitables​[t[0]][t[1]]).getDoor();
+						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+					}
+				}
+					
+					player.coordinates = t;
 			}
-			player.coordinates = t;
-		}
-
-		if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale")) {
-			((Scale) visitables​[t[0]][t[1]]).setWeight(4);
-			if (((Scale) visitables​[t[0]][t[1]]).getWeight() >= ((Scale) visitables​[t[0]][t[1]]).getWeightLimit()) {
-				int[] tempDoor = ((Scale) visitables​[t[0]][t[1]]).getDoor();
-				((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
-			}
-		}
+		
 	}
 
 	public void boxing(Player player) {
@@ -152,10 +176,40 @@ public class ActionController {
 	}
 
 	public void getMap() {
-
+		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				switch (visitables​[i][j].getClass().getSimpleName()) {
+				case "SpecialWall":
+					System.out.print("Ws");
+					if (j != columns - 1)
+						System.out.print(",");
+					break;
+				case "StarGate":
+					if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+						System.out.print("O");
+					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+						System.out.print("J");
+					else{
+					System.out.print("P");
+					switch( ((StarGate)visitables​[i][j]).getColor() ){
+					case "blue":
+						System.out.print("b");
+						break;
+					case "red":
+						System.out.print("r");
+						break;	
+					case "green":
+						System.out.print("g");
+						break;
+					case "yellow":
+						System.out.print("y");
+						break;
+						}
+					}
+					if (j != columns - 1)
+						System.out.print(",");
+					break;
 				case "Wall":
 					System.out.print("W");
 					if (j != columns - 1)

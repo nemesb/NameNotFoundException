@@ -15,7 +15,7 @@ public class Game {
 		int column=0;
 		int row=0;
 		
-		Scanner scanner = new Scanner(new File("level1.csv"));
+		Scanner scanner = new Scanner(new File("level3.csv")); //Itt adjuk meg a beolvasandó pályát
 	    scanner.useDelimiter(",");
 	    System.out.print(" ");  
 	    
@@ -23,19 +23,48 @@ public class Game {
 	    ac.columns=scanner.nextInt();
 	    scanner.next();
 
-		ac.visitables​=new Tile[ac.rows][ac.columns];
-
+		ac.visitables​=new Tile[ac.rows][ac.columns]; //Létrehozunk egy megfelelő méretű pályát
+		ac.starGates​=new StarGate[4]; //Létrehozzuk a csillagkapukat eltároló tömböt
+		for(int i=0;i<4;i++)
+			ac.starGates​[i]=null;
+		
 	    while(scanner.hasNext()){
 	       String temp=scanner.next();
 	       
-	       if(temp.contains(System.getProperty("line.separator"))){
+	       if(temp.contains(System.getProperty("line.separator"))){ 
+	    	   /*sortörés esetén a pályán is új sort kezdünk*/
 	    	   row++;
 	    	   column=0;
 	       }
 	       else{
+	    	   /*egyébként pedig a beolvasott betű alapján hozzuk létre a megfelelő típusú mezőt*/
 		       switch(temp.charAt(0)){
+		       		case 'P':
+		       			ac.visitables​[row][column]=new StarGate();
+		       		 switch(temp.charAt(1)){
+		       		 case 'b':
+		       			((StarGate) ac.visitables​[row][column]).setColor("blue");
+		       			ac.starGates​[0]=ac.visitables​[row][column]; //a 0 helyen tároljuk a kék portált
+		       			break;
+		       		 case 'r':
+		       			((StarGate) ac.visitables​[row][column]).setColor("red");
+		       			ac.starGates​[1]=ac.visitables​[row][column]; //a 1 helyen tároljuk a piros portált
+		       			break;
+		       		 case 'g':
+		       			((StarGate) ac.visitables​[row][column]).setColor("green");
+		       			ac.starGates​[2]=ac.visitables​[row][column]; //a 2 helyen tároljuk a zöld portált
+		       			break;
+		       		 case 'y':
+		       			((StarGate) ac.visitables​[row][column]).setColor("yellow");
+		       			ac.starGates​[3]=ac.visitables​[row][column]; //a 3 helyen tároljuk a sárga portált
+		       			break;
+		       			}
+	       			break;
 		       		case 'W':
-		       			ac.visitables​[row][column]=new Wall();
+		       			if(temp.length()==1)
+		       				ac.visitables​[row][column]=new Wall();
+		       			else
+		       				ac.visitables​[row][column]=new SpecialWall();
 		       			break;
 		       		case 'C':
 		       			ac.visitables​[row][column]=new CleanTile();
