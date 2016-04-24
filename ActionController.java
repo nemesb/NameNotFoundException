@@ -1,6 +1,7 @@
 package projlab;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class ActionController {
 
@@ -48,6 +49,8 @@ public class ActionController {
 				
 				((CleanTile)visitables​[t[0]][t[1]]).changeZPM();
 				player.addZPM();
+				if(player==players[0])
+					ZPMcreator(player);
 			}
 			player.coordinates = t;
 		}
@@ -203,4 +206,24 @@ public class ActionController {
 		}
 	}
 
+	private void ZPMcreator(Player player){
+		if(player.getZPMs()%2==0){
+			int tries=0;
+			Random rand = new Random();
+			int i=rand.nextInt(rows-1) + 1;
+			int j=rand.nextInt(columns-1) + 1;
+			
+			while(tries<(rows-1)*(columns-1)&&
+					(!visitables​[i][j].getClass().getSimpleName().equals("CleanTile"))
+					||(visitables​[i][j].getClass().getSimpleName().equals("CleanTile")
+							&&((CleanTile) visitables​[i][j]).getZPM())){
+				System.out.println(visitables​[i][j].getClass().getSimpleName());
+				tries++;
+				i=rand.nextInt(rows-1) + 1;
+				j=rand.nextInt(columns-1) + 1;
+			}
+			
+			((CleanTile) visitables​[i][j]).changeZPM();
+		}
+	}
 }
