@@ -64,6 +64,29 @@ public class Game {
 		       			Door tempDoor=new Door();
 		       			tempDoor.doorID=Character.getNumericValue(temp.charAt(1));
 		       			ac.visitables​[row][column]=tempDoor;
+		       			for(int i = 0; i<=row; i++)
+		       			{
+		       				if(i!=row){
+			       			    for(int j = 0; j<ac.columns; j++)
+			       			    {
+			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Scale")&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
+			       			    		((Scale) ac.visitables​[i][j]).setDoor(row,column);
+			       			    	}
+			       			    		
+			       			    }
+		       			    }
+		       				else{
+		       				 for(int j = 0; j<column; j++)
+			       			    {
+			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Scale")&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
+			       			    		((Scale) ac.visitables​[i][j]).setDoor(row,column);
+			       			    	}
+			       			    		
+			       			    }
+		       				}
+		       					
+		       			}
+		       			
 		       			column++;
 		       			break;
 		       		case 'S':
@@ -71,6 +94,28 @@ public class Game {
 		       			tempScale.scaleID=Character.getNumericValue(temp.charAt(1));
 		       			tempScale.setWeightLimit(Character.getNumericValue(temp.charAt(3)));
 		       			ac.visitables​[row][column]=tempScale;
+		       			for(int i = 0; i<=row; i++)
+		       			{
+		       				if(i!=row){
+			       			    for(int j = 0; j<ac.columns; j++)
+			       			    {
+			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Door")&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
+			       			    		((Scale) ac.visitables​[row][column]).setDoor(i,j);
+			       			    	}
+			       			    		
+			       			    }
+		       			    }
+		       				else{
+		       				 for(int j = 0; j<column; j++)
+			       			    {
+			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Door")&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
+			       			    		((Scale) ac.visitables​[row][column]).setDoor(i,j);
+			       			    	}
+			       			    		
+			       			    }
+		       				}
+		       					
+		       			}
 		       			column++;
 		       			break;
 		       }

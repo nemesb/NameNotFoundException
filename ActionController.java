@@ -43,13 +43,23 @@ public class ActionController {
 				  &&(!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
 						  || ((Door) visitables​[t[0]][t[1]]).isPassable())){
 			  
-			 if(visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale"))
+			 if(visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale")){
 				 ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).setWeight(-4);
-			 player.coordinates=t;
+				 if (((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeight()<((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeightLimit()){
+					  int[] tempDoor=((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
+					  ((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+				  }
+			 }
+				 player.coordinates=t;
 		  }
 		  
-		  if(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale"))
+		  if(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale")){
 			  ((Scale) visitables​[t[0]][t[1]]).setWeight(4);
+			  if (((Scale) visitables​[t[0]][t[1]]).getWeight()>=((Scale) visitables​[t[0]][t[1]]).getWeightLimit()){
+				  int[] tempDoor=((Scale) visitables​[t[0]][t[1]]).getDoor();
+				  ((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+			  }
+		  }
 	}
 	
 	public static Visitable getNextVisitable(Visitable currentTile,int direction){ //megadja, hogy a meghatározott irányban mi a következő mező
