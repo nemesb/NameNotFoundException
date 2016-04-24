@@ -10,9 +10,10 @@ public class Scale extends Tile{
 
 	public void setWeight(int weight){ 	//Növeli a mérlegen lévő súlyt.
 			currentWeight+=weight;
+			
 	}
 	
-	public void setWeightLimit(int limit){ 	//Növeli a mérlegen lévő súlyt.
+	public void setWeightLimit(int limit){ 	//Beállítja a mérleg súlyhatárát
 			weightLimit​=limit;
 	}
 	public static void getWeight(){ 	//Megadja a jelenleg a mérlegen lévő súlyt.

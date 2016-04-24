@@ -9,7 +9,7 @@ public class ActionController {
 	protected Visitor replicator​; 	//A replikátor helyét jegyzi.
 	int countZPMs; 	//​A pályán lévő ZPM­ek számát jegyzi.
 	Visitable additionalStoredVisitable​;	 //A funkciók végrehajtását megkönnyítő plusz attribútum.
-	Visitable[] starGates​;	//Azon mezők jegyzésére szolgál, ahol portált nyitottak a játékosok.
+	Tile[] starGates​;	//Azon mezők jegyzésére szolgál, ahol portált nyitottak a játékosok.
 	Boolean replicatorIsAlive​; 	//A replikátor létezéséről vagy nem létezéséről kapunk információt a segítségével.*/
 	int rows=0;
 	int columns=0;
@@ -41,9 +41,16 @@ public class ActionController {
 		  
 		  if(!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
 				  &&(!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
-						  || ((Door) visitables​[t[0]][t[1]]).isPassable()))
-			  player.coordinates=t;
-		  	}
+						  || ((Door) visitables​[t[0]][t[1]]).isPassable())){
+			  
+			 if(visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale"))
+				 ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).setWeight(-4);
+			 player.coordinates=t;
+		  }
+		  
+		  if(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale"))
+			  ((Scale) visitables​[t[0]][t[1]]).setWeight(4);
+	}
 	
 	public static Visitable getNextVisitable(Visitable currentTile,int direction){ //megadja, hogy a meghatározott irányban mi a következő mező
 
