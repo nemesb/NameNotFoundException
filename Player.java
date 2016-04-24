@@ -3,8 +3,8 @@ package projlab;
 public class Player implements Visitor{
 	
 	private String name; //​Játékos neve
-	private int direction; //​A játékos irányát tárolja.
-	private Boolean hasBox; //​Azt jegyzi, hogy van a felhasználónál doboz, vagy nincs.
+	private int direction=0; //​A játékos irányát tárolja.
+	private Boolean hasBox=false; //​Azt jegyzi, hogy van a felhasználónál doboz, vagy nincs.
 	private Tile tile; //Azt a Tile­t tárolja, amelyiken a felhasználó karaktere éppen áll.
 	private int collectedZPMs; //​Azért felel, hogy az összegyűjtött elemeket ZPMeket számontartsa.
 	int coordinates[]=new int[2];
@@ -18,9 +18,9 @@ public class Player implements Visitor{
 		
 	}
 	
-	public static Boolean getBox(){ //megmondja hány doboz van a játékosnál
+	public Boolean getBox(){ //megmondja van-e doboz van a játékosnál
 		
-		return null;
+		return hasBox;
 		
 	}
 	
@@ -28,10 +28,10 @@ public class Player implements Visitor{
 		
 	}
 	
-	public static void changeBox(){ //megváltoztatja, hogy van-e épp doboz a játékosnál
-		
-
+	public void changeBox(){ //megváltoztatja, hogy van-e épp doboz a játékosnál
+		hasBox=!hasBox;
 	}
+		  	
 	
 	public static void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
 		/* Itt még új ZPM-et is kell csináltatni minden második ZPM felvételnél*/
@@ -45,4 +45,12 @@ public class Player implements Visitor{
 		return coordinates[1];
 	}
 	
+	public int getDirection(){
+		return direction;
+	}
+	
+	public void setDirection(int dir){
+		direction=dir;
+	}
+
 }

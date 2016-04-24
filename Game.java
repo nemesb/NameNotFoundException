@@ -15,7 +15,7 @@ public class Game {
 		int column=0;
 		int row=0;
 		
-		Scanner scanner = new Scanner(new File("level2.csv"));
+		Scanner scanner = new Scanner(new File("level1.csv"));
 	    scanner.useDelimiter(",");
 	    System.out.print(" ");  
 	    
@@ -36,29 +36,24 @@ public class Game {
 		       switch(temp.charAt(0)){
 		       		case 'W':
 		       			ac.visitables​[row][column]=new Wall();
-		       			column++;
 		       			break;
 		       		case 'C':
 		       			ac.visitables​[row][column]=new CleanTile();
-		       			column++;
 		       			break;
 		       		case 'B':
 		       			ac.visitables​[row][column]=new BoxedTile();
-		       			column++;
 		       			break;
 		       		case 'O':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray[] ={row,column};
 		       			ac.players[0]=new Player();
 		       			ac.players[0].coordinates=tempArray;
-		       			column++;
 		       			break;
 		       		case 'J':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			int tempArray2[] ={row,column};
 		       			ac.players[1]=new Player();
 		       			ac.players[1].coordinates=tempArray2;
-		       			column++;
 		       			break;
 		       		case 'D':
 		       			Door tempDoor=new Door();
@@ -87,7 +82,6 @@ public class Game {
 		       					
 		       			}
 		       			
-		       			column++;
 		       			break;
 		       		case 'S':
 		       			Scale tempScale=new Scale();
@@ -116,9 +110,13 @@ public class Game {
 		       				}
 		       					
 		       			}
-		       			column++;
 		       			break;
 		       }
+		       ac.visitables​[row][column].coordinates=new int[2];
+		       ac.visitables​[row][column].coordinates[0]=row;
+		       ac.visitables​[row][column].coordinates[1]=column;
+      		   column++;
+
 	       }
 	    }
 	    scanner.close();
@@ -126,6 +124,55 @@ public class Game {
 	}
 	
 	public void play(){	//​Meghívásakor elindul a játék. Innentől kezdve az ActionController feladata a bemenetek kezelése.
-
+	    Scanner scanner = new Scanner(System.in);
+	    String temp=null;
+	    
+		do{
+		    System.out.println("\n");
+			ac.getMap();
+			System.out.print("\nAdj meg egy parancsot: ");
+			temp=scanner.next();
+			
+			switch(temp){
+			/*O'Neill ezredes mozgatása*/
+			case "4": //balra
+				if(ac.players[0]!=null)
+					ac.move(ac.players[0],0);
+				break;
+			case "8": //fel
+				if(ac.players[0]!=null)
+					ac.move(ac.players[0],1);
+				break;
+			case "6": //jobbra
+				if(ac.players[0]!=null)
+					ac.move(ac.players[0],2);
+				break;
+			case "2": //le
+				if(ac.players[0]!=null)
+					ac.move(ac.players[0],3);
+				break;
+			/*Ezredes dobozfelvétele*/
+			case "5":
+				ac.boxing(ac.players[0]);
+				break;
+			/*Jaffa mozgatása*/
+			case "a": //balra
+				if(ac.players[1]!=null)
+					ac.move(ac.players[1],0);
+				break;
+			case "w": //fel
+				if(ac.players[1]!=null)
+					ac.move(ac.players[1],1);
+				break;
+			case "d": //jobbra
+				if(ac.players[1]!=null)
+					ac.move(ac.players[1],2);
+				break;
+			case "s": //le
+				if(ac.players[1]!=null)
+					ac.move(ac.players[1],3);
+				break;
+			}
+		}while(!(temp.equals("exit")));
 	}
 }

@@ -7,6 +7,7 @@ public class Scale extends Tile{
 	private int currentWeight=0; 	//​Eltárolja mennyi súly van a mérlegen.
 	private int weightLimit​;	 //Eltárolja mennyi súlyt kell a mérlegre helyezni az ajtó kinyitásához.
 	public int scaleID;
+	public Boolean hasBox=false;
 
 	public void setWeight(int weight){ 	//Növeli a mérlegen lévő súlyt.
 			currentWeight+=weight;
