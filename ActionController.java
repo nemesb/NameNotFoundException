@@ -27,25 +27,9 @@ public class ActionController {
 		if (player.getDirection() != direction)
 			player.setDirection(direction);
 		else {
-			switch (direction) {
-			case 0:
-				t[0] = player.coordinates[0];
-				t[1] = player.coordinates[1] - 1;
-				break;
-			case 1:
-				t[0] = player.coordinates[0] - 1;
-				t[1] = player.coordinates[1];
-				break;
-			case 2:
-				t[0] = player.coordinates[0];
-				t[1] = player.coordinates[1] + 1;
-				break;
-			case 3:
-				t[0] = player.coordinates[0] + 1;
-				t[1] = player.coordinates[1];
-				break;
-			}
+			t=getNextVisitable(player.coordinates, direction).coordinates;
 		}
+			
 		if (!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
 				&& (!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
 						|| ((Door) visitables​[t[0]][t[1]]).isPassable())) {
@@ -58,6 +42,12 @@ public class ActionController {
 					int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
 					((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
 				}
+			}
+			if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("CleanTile")
+					&&((CleanTile)visitables​[t[0]][t[1]]).getZPM()){
+				
+				((CleanTile)visitables​[t[0]][t[1]]).changeZPM();
+				player.addZPM();
 			}
 			player.coordinates = t;
 		}
@@ -115,11 +105,11 @@ public class ActionController {
 			case 0: // balra
 				return visitables​[temp[0]][temp[1] - 1];
 			case 1: // fel
-				return visitables​[temp[0] + 1][temp[1]];
+				return visitables​[temp[0] - 1][temp[1]];
 			case 2: // jobbra
 				return visitables​[temp[0]][temp[1] + 1];
 			case 3: // le
-				return visitables​[temp[0] - 1][temp[1]];
+				return visitables​[temp[0] + 1][temp[1]];
 			}
 		} catch (Exception e) {
 			return null;
@@ -181,6 +171,8 @@ public class ActionController {
 						System.out.print("O,");
 					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
 						System.out.print("J,");
+					else if(((CleanTile) visitables​[i][j]).getZPM())
+						System.out.print("Z,");
 					else
 						System.out.print("C,");
 					break;

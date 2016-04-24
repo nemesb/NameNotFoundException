@@ -33,7 +33,8 @@ public class Player implements Visitor{
 	}
 		  	
 	
-	public static void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
+	public void addZPM(){ //hozzáad egyet a játékosnál lévő ZPM-ekhez 
+		collectedZPMs++;
 		/* Itt még új ZPM-et is kell csináltatni minden második ZPM felvételnél*/
 	}
 	

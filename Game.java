@@ -40,6 +40,10 @@ public class Game {
 		       		case 'C':
 		       			ac.visitables​[row][column]=new CleanTile();
 		       			break;
+		       		case 'Z':
+		       			ac.visitables​[row][column]=new CleanTile();
+		       			((CleanTile) ac.visitables​[row][column]).changeZPM();
+		       			break;
 		       		case 'B':
 		       			ac.visitables​[row][column]=new BoxedTile();
 		       			break;
