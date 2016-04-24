@@ -14,9 +14,36 @@ public class ActionController {
 	int rows=0;
 	int columns=0;
 	
-	public static void move(Visitor player, int direction){ //mozgatja az adott visitor-t
+	public void move(Player player, int direction){ //mozgatja az adott visitor-t
 		
-	}
+		/* 0:balra 1:fel 2:jobbra 3:le */
+		
+		  int[] t= new int[2];
+		  
+		  switch(direction){
+		  case 0:
+		   t[0]=player.coordinates[0];
+		   t[1]=player.coordinates[1]-1;
+		   break;
+		  case 1:
+		   t[0]=player.coordinates[0]-1;
+		   t[1]=player.coordinates[1];
+		   break;
+		  case 2:
+		   t[0]=player.coordinates[0];
+		   t[1]=player.coordinates[1]+1;
+		   break;
+		  case 3:
+		   t[0]=player.coordinates[0]+1;
+		   t[1]=player.coordinates[1];
+		   break;
+		  }
+		  
+		  if(!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
+				  &&(!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
+						  || ((Door) visitables​[t[0]][t[1]]).isPassable()))
+			  player.coordinates=t;
+		  	}
 	
 	public static Visitable getNextVisitable(Visitable currentTile,int direction){ //megadja, hogy a meghatározott irányban mi a következő mező
 
@@ -49,6 +76,11 @@ public class ActionController {
 			    		System.out.print(",");
 		    		break;
 		    	case "BoxedTile":
+		    		if(players[0]!=null&&i==players[0].getRow()&&j==players[0].getColumn())
+			    		System.out.print("O,");
+		    		else if(players[1]!=null&&i==players[1].getRow()&&j==players[1].getColumn())
+			    		System.out.print("J,");
+		    		else
 		    		System.out.print("B,");
 		    		break;
 		    	case "CleanTile":
@@ -60,9 +92,19 @@ public class ActionController {
 		    		System.out.print("C,");
 		    		break;
 		    	case "Scale":
+		    		if(players[0]!=null&&i==players[0].getRow()&&j==players[0].getColumn())
+			    		System.out.print("O,");
+		    		else if(players[1]!=null&&i==players[1].getRow()&&j==players[1].getColumn())
+			    		System.out.print("J,");
+		    		else
 		    		System.out.print("S"+((Scale) visitables​[i][j]).getID()+"."+((Scale) visitables​[i][j]).getWeightLimit()+",");
 		    		break;
 		    	case "Door":
+		    		if(players[0]!=null&&i==players[0].getRow()&&j==players[0].getColumn())
+			    		System.out.print("O,");
+		    		else if(players[1]!=null&&i==players[1].getRow()&&j==players[1].getColumn())
+			    		System.out.print("J,");
+		    		else
 		    		System.out.print("D"+((Door) visitables​[i][j]).getID()+",");
 		    		break;
 		    	default:
