@@ -6,6 +6,12 @@ public class StarGate extends Tile{
 	Boolean passable;	//Eltárolja, hogy átjárható-e az adott csillagkapu.
 	private String color;
 	
+	public StarGate() {
+	}
+	public StarGate(String col) {
+		color=col;
+	}
+
 	public Boolean isPassable(){
 		return passable;
 	}
@@ -20,5 +26,8 @@ public class StarGate extends Tile{
 	
 	public String getColor(){
 		return color;
+	}
+	public void changeColor(String col) {
+		color=col;
 	}
 }

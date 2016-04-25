@@ -1,6 +1,8 @@
 package projlab;
 
-import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 public class ActionController {
@@ -8,14 +10,14 @@ public class ActionController {
 	protected Player players[] = new Player[2]; // A két játékos tárolására
 												// szolgáló tömb.
 	protected Tile[][] visitables​; // A pályán lévő elemeket tároló tömb.
-	protected Visitor replicator​; // A replikátor helyét jegyzi.
+	protected Replicator replicator​; // A replikátor helyét jegyzi.
 	PortalBeam[] beams;
 	int countZPMs; // ​A pályán lévő ZPM­ek számát jegyzi.
 	Visitable additionalStoredVisitable​; // A funkciók végrehajtását
 											// megkönnyítő plusz attribútum.
 	Tile[] starGates​; // Azon mezők jegyzésére szolgál, ahol portált nyitottak
 						// a játékosok.
-	Boolean replicatorIsAlive​; // A replikátor létezéséről vagy nem létezéséről
+	Boolean replicatorIsAlive= false ; // A replikátor létezéséről vagy nem létezéséről
 								// kapunk információt a segítségével.*/
 	int rows = 0;
 	int columns = 0;
@@ -29,7 +31,8 @@ public class ActionController {
 		if (player.getDirection() != direction)
 			player.setDirection(direction);
 		else {
-			t=getNextVisitable(player.coordinates, direction).coordinates;
+			if(getNextVisitable(player.coordinates, direction)!=null)
+				t=getNextVisitable(player.coordinates, direction).coordinates;
 		}
 			
 		if (!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
@@ -42,8 +45,9 @@ public class ActionController {
 					if (((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
 							.getWeight() < ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]])
 									.getWeightLimit()) {
+						if(((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor()!=null){
 						int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
-						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();}
 					}
 				}
 				if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("CleanTile")
@@ -79,8 +83,10 @@ public class ActionController {
 				if (visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Scale")) {
 					((Scale) visitables​[t[0]][t[1]]).setWeight(4);
 					if (((Scale) visitables​[t[0]][t[1]]).getWeight() >= ((Scale) visitables​[t[0]][t[1]]).getWeightLimit()) {
+						if(((Scale) visitables​[t[0]][t[1]]).getDoor()!=null){
 						int[] tempDoor = ((Scale) visitables​[t[0]][t[1]]).getDoor();
 						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+						}
 					}
 				}
 					
@@ -118,7 +124,8 @@ public class ActionController {
 				((Scale) getNextVisitable(player.coordinates, player.getDirection())).setWeight(2);
 				if (((Scale) getNextVisitable(player.coordinates, player.getDirection())).getWeight() >= ((Scale) getNextVisitable(player.coordinates, player.getDirection())).getWeightLimit()) {
 					int[] tempDoor = (((Scale) getNextVisitable(player.coordinates, player.getDirection())).getDoor());
-					((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+					if(tempDoor!=null)
+						((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
 				}
 			}
 			player.changeBox();
@@ -148,13 +155,17 @@ public class ActionController {
 	public void changeVisitable(Tile changingVisitable, Tile newVisitable) { // megváltoztatja
 																				// az
 																				// adott
-																				// visitable-t
 		int[] t = changingVisitable.coordinates;
 
 		if (newVisitable.getClass().getSimpleName().equals("BoxedTile")) {
 			visitables​[t[0]][t[1]] = new BoxedTile();
 		} else if (newVisitable.getClass().getSimpleName().equals("CleanTile")) {
 			visitables​[t[0]][t[1]] = new CleanTile();
+		}
+		else if (newVisitable.getClass().getSimpleName().equals("StarGate")) {
+			visitables​[t[0]][t[1]] = new StarGate(((StarGate) newVisitable).getColor());
+		} else if (newVisitable.getClass().getSimpleName().equals("SpecialWall")) {
+			visitables​[t[0]][t[1]] = new SpecialWall();
 		}
 
 		visitables​[t[0]][t[1]].coordinates = t;
@@ -169,7 +180,6 @@ public class ActionController {
 	}
 
 	public void shoot(Player visitor,String color){ //az adott visitor adott színű lövedéket lő ki
-		 		boolean alive=true;
 		  		PortalBeam beam= new PortalBeam();
 		  		beam.changeColor(color);
 		  		beam.coordinates=new int[2];
@@ -194,20 +204,84 @@ public class ActionController {
 	private void move(PortalBeam beam) {
 		beam.coordinates=getNextVisitable(beam.coordinates,beam.getDirection()).coordinates;
 	}
-
+	
+	private void move(Replicator rep){
+		int[] temp=getNextVisitable(rep.coordinates,rep.getDirection()).coordinates;
+		if(visitables​[temp[0]][temp[1]].getClass().getSimpleName().equals("Wall"))
+			rep.setDirection();
+		else if(visitables​[temp[0]][temp[1]].getClass().getSimpleName().equals("Hole")){
+			changeVisitable(visitables​[temp[0]][temp[1]],new CleanTile());
+			rep=null;
+			replicatorIsAlive=false;
+		}
+		else
+			rep.coordinates=temp;
+	}
 	public void getMap() {
-		
 		for(int i=0;i<4;i++){ 
-		if(beams[i]!=null&&beams[i].coordinates[0]<rows-1&&beams[i].coordinates[1]<columns-1)
+		if(beams[i]!=null&&beams[i].coordinates[0]<rows-1&&beams[i].coordinates[1]<columns-1
+				&&beams[i].coordinates[0]!=0&&beams[i].coordinates[1]!=0)
 			move(beams[i]); //mozgatja a pályán lévő lövedékeket
 		}
+		if(replicatorIsAlive&&replicator​!=null&&replicator​.coordinates[0]<rows-1&&replicator​.coordinates[1]<columns-1
+				&&replicator​.coordinates[0]!=0&&replicator​.coordinates[1]!=0){
+			move(replicator​);
+		}
+			
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				switch (visitables​[i][j].getClass().getSimpleName()) {
 				case "SpecialWall":
-					System.out.print("Ws");
-					if (j != columns - 1)
-						System.out.print(",");
+					int b=0;
+					boolean hasBeam=false;
+					while(b<4&&!hasBeam){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+						hasBeam=true;
+						}
+						b++;
+					}
+					
+					if(hasBeam){
+						changeVisitable(visitables​[i][j],
+								new StarGate(beams[b-1].getColor()));
+						switch(beams[b-1].getColor()){
+				  		case "blue":
+				  			if(starGates​[0]!=null){
+				  			changeVisitable(visitables​[starGates​[0].coordinates[0]][starGates​[0].coordinates[1]],
+				  					new SpecialWall());
+				  			}
+				  			starGates​[0]=visitables​[i][j];
+				  			break;
+				  		case "red":
+				  			if(starGates​[1]!=null){
+				  			changeVisitable(visitables​[starGates​[1].coordinates[0]][starGates​[1].coordinates[1]],
+				  					new SpecialWall());
+				  			}
+				  			starGates​[1]=visitables​[i][j];
+				  			break;	
+				  		case "green":
+				  			if(starGates​[2]!=null){
+				  			changeVisitable(visitables​[starGates​[2].coordinates[0]][starGates​[2].coordinates[1]],
+				  					new SpecialWall());
+				  			}
+				  			starGates​[2]=visitables​[i][j];
+				  			break;
+				  		case "yellow":
+				  			if(starGates​[3]!=null){
+				  			changeVisitable(visitables​[starGates​[3].coordinates[0]][starGates​[3].coordinates[1]],
+				  					new SpecialWall());
+				  			}
+				  			starGates​[3]=visitables​[i][j];
+				  			break;
+				  		}		 		
+						beams[b-1]= null;
+						System.out.print("Ws");
+					}
+					else if(!hasBeam){
+						System.out.print("Ws");
+						if (j != columns - 1)
+							System.out.print(",");
+						}
 					break;
 				case "StarGate":
 					if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
@@ -235,21 +309,19 @@ public class ActionController {
 						System.out.print(",");
 					break;
 				case "Wall":
+					b=0;
+					while(b<4){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+						beams[b]= null;					}
+						b++;
+					}
 					System.out.print("W");
 					if (j != columns - 1)
 						System.out.print(",");
 					break;
 				case "BoxedTile":
-					if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
-						System.out.print("O,");
-					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
-						System.out.print("J,");
-					else
-						System.out.print("B,");
-					break;
-				case "CleanTile":
-					int b=0;
-					Boolean hasBeam=false;
+					b=0;
+					hasBeam=false;
 
 					while(b<4){
 					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
@@ -263,13 +335,70 @@ public class ActionController {
 						System.out.print("O,");
 					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
 						System.out.print("J,");
+					else
+						System.out.print("B,");
+					break;
+				case "CleanTile":
+					b=0;
+					hasBeam=false;
+
+					while(b<4){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							hasBeam=true;
+						}
+						b++;
+					}
+					if(hasBeam)
+						System.out.print("*,");
+					else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+						System.out.print("O,");
+					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+						System.out.print("J,");
+					else if (replicatorIsAlive && i == replicator​.coordinates[0] && j == replicator​.coordinates[1])
+						System.out.print("R,");
 					else if(((CleanTile) visitables​[i][j]).getZPM())
 						System.out.print("Z,");
 					else
 						System.out.print("C,");
 					break;
+				case "Hole":
+					b=0;
+					hasBeam=false;
+
+					while(b<4){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							hasBeam=true;
+						}
+						b++;
+					}
+					if(hasBeam)
+						System.out.print("*");
+					else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn()){
+						players[0]=null;
+						System.out.print("H");
+						}
+					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn()){
+						players[0]=null;
+					System.out.print("H");
+					}
+					else
+						System.out.print("H");
+					if (j != columns - 1)
+						System.out.print(",");
+					break;
 				case "Scale":
-					if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+					b=0;
+					hasBeam=false;
+
+					while(b<4){
+					if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							hasBeam=true;
+						}
+						b++;
+					}
+					if(hasBeam)
+						System.out.print("*,");
+					else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
 						System.out.print("O,");
 					else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
 						System.out.print("J,");
@@ -290,11 +419,221 @@ public class ActionController {
 				default:
 					System.out.print(visitables​[i][j].getClass().getSimpleName() + ",");
 				}
+				
 			}
 			System.out.println();
 		}
 	}
 
+	public void writeMap() throws FileNotFoundException, UnsupportedEncodingException{
+		PrintWriter writer = new PrintWriter("output.csv", "UTF-8");
+		for(int i=0;i<4;i++){ 
+			if(beams[i]!=null&&beams[i].coordinates[0]<rows-1&&beams[i].coordinates[1]<columns-1)
+				move(beams[i]); //mozgatja a pályán lévő lövedékeket
+			}
+		if(replicatorIsAlive&&replicator​!=null&&replicator​.coordinates[0]<rows-1&&replicator​.coordinates[1]<columns-1
+				&&replicator​.coordinates[0]!=0&&replicator​.coordinates[1]!=0){
+			move(replicator​);
+		}
+		writer.print(","+rows+","+columns+",\n");
+			for (int i = 0; i < rows; i++) {
+				writer.print(',');
+				for (int j = 0; j < columns; j++) {
+					switch (visitables​[i][j].getClass().getSimpleName()) {
+					case "SpecialWall":
+						int b=0;
+						boolean hasBeam=false;
+						while(b<4&&!hasBeam){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							hasBeam=true;
+							}
+							b++;
+						}
+						
+						if(hasBeam){
+							changeVisitable(visitables​[i][j],
+									new StarGate(beams[b-1].getColor()));
+							switch(beams[b-1].getColor()){
+					  		case "blue":
+					  			if(starGates​[0]!=null){
+					  			changeVisitable(visitables​[starGates​[0].coordinates[0]][starGates​[0].coordinates[1]],
+					  					new SpecialWall());
+					  			}
+					  			starGates​[0]=visitables​[i][j];
+					  			break;
+					  		case "red":
+					  			if(starGates​[1]!=null){
+					  			changeVisitable(visitables​[starGates​[1].coordinates[0]][starGates​[1].coordinates[1]],
+					  					new SpecialWall());
+					  			}
+					  			starGates​[1]=visitables​[i][j];
+					  			break;	
+					  		case "green":
+					  			if(starGates​[2]!=null){
+					  			changeVisitable(visitables​[starGates​[2].coordinates[0]][starGates​[2].coordinates[1]],
+					  					new SpecialWall());
+					  			}
+					  			starGates​[2]=visitables​[i][j];
+					  			break;
+					  		case "yellow":
+					  			if(starGates​[3]!=null){
+					  			changeVisitable(visitables​[starGates​[3].coordinates[0]][starGates​[3].coordinates[1]],
+					  					new SpecialWall());
+					  			}
+					  			starGates​[3]=visitables​[i][j];
+					  			break;
+					  		}		 		
+							beams[b-1]= null;
+							writer.print("Ws");
+						}
+						else if(!hasBeam){
+							writer.print("Ws");
+							if (j != columns - 1)
+								writer.print(",");
+							}
+						break;
+					case "StarGate":
+						if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+							writer.print("O");
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+							writer.print("J");
+						else{
+						writer.print("P");
+						switch( ((StarGate)visitables​[i][j]).getColor() ){
+						case "blue":
+							writer.print("b");
+							break;
+						case "red":
+							writer.print("r");
+							break;	
+						case "green":
+							writer.print("g");
+							break;
+						case "yellow":
+							writer.print("y");
+							break;
+							}
+						}
+						if (j != columns - 1)
+							writer.print(",");
+						break;
+					case "Wall":
+						b=0;
+						while(b<4){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+							beams[b]= null;					}
+							b++;
+						}
+						writer.print("W");
+						if (j != columns - 1)
+							writer.print(",");
+						break;
+					case "BoxedTile":
+						b=0;
+						hasBeam=false;
+
+						while(b<4){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+								hasBeam=true;
+							}
+							b++;
+						}
+						if(hasBeam)
+							writer.print("*,");
+						else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+							writer.print("O,");
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+							writer.print("J,");
+						else
+							writer.print("B,");
+						break;
+					case "CleanTile":
+						b=0;
+						hasBeam=false;
+
+						while(b<4){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+								hasBeam=true;
+							}
+							b++;
+						}
+						if(hasBeam)
+							writer.print("*,");
+						else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+							writer.print("O,");
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+							writer.print("J,");
+						else if (replicatorIsAlive && i == replicator​.coordinates[0] && j == replicator​.coordinates[1])
+							writer.print("R,");
+						else if(((CleanTile) visitables​[i][j]).getZPM())
+							writer.print("Z,");
+						else
+							writer.print("C,");
+						break;
+					case "Hole":
+						b=0;
+						hasBeam=false;
+
+						while(b<4){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+								hasBeam=true;
+							}
+							b++;
+						}
+						if(hasBeam)
+							writer.print("*");
+						else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn()){
+							players[0]=null;
+							writer.print("H");
+							}
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn()){
+							players[0]=null;
+						writer.print("H");
+						}
+						else
+							writer.print("H");
+						if (j != columns - 1)
+							writer.print(",");
+						break;
+					case "Scale":
+						b=0;
+						hasBeam=false;
+
+						while(b<4){
+						if (beams[b]!= null&&i == beams[b].coordinates[0] && j == beams[b].coordinates[1] ){
+								hasBeam=true;
+							}
+							b++;
+						}
+						if(hasBeam)
+							writer.print("*,");
+						else if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+							writer.print("O,");
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+							writer.print("J,");
+						else if (((Scale) visitables​[i][j]).hasBox)
+							writer.print("B,");
+						else
+							writer.print("S" + ((Scale) visitables​[i][j]).getID() + "."
+									+ ((Scale) visitables​[i][j]).getWeightLimit() + ",");
+						break;
+					case "Door":
+						if (players[0] != null && i == players[0].getRow() && j == players[0].getColumn())
+							writer.print("O,");
+						else if (players[1] != null && i == players[1].getRow() && j == players[1].getColumn())
+							writer.print("J,");
+						else
+							writer.print("D" + ((Door) visitables​[i][j]).getID() + ",");
+						break;
+					default:
+						writer.print(visitables​[i][j].getClass().getSimpleName() + ",");
+					}
+				}
+				writer.print(',');
+				writer.println();
+			}
+		writer.close();
+	}
 	private void ZPMcreator(Player player){
 		if(player.getZPMs()%2==0){
 			int tries=0;
@@ -315,4 +654,5 @@ public class ActionController {
 			((CleanTile) visitables​[i][j]).changeZPM();
 		}
 	}
+	
 }

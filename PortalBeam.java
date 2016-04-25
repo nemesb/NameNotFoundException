@@ -13,7 +13,8 @@ public class PortalBeam implements Visitor {
 		
 	}
 	
-	public void changeColor(String color){	//Beállítja a lövedék színét.
+	public void changeColor(String col){	//Beállítja a lövedék színét.
+		color=col;
 	}
 	
 	public String getColor(){	 //Visszaadja a lövedék színét.
