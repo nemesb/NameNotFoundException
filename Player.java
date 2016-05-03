@@ -14,7 +14,41 @@ public class Player implements Visitor{
 		return null;
 	}
 	public void visit(Visitable visitable) { //meglátogatja az adott mezőt
-		
+		switch (visitable.getClass().getSimpleName()){
+		case "CleanTile":
+			CleanTile tempCT= (CleanTile) visitable;
+			this.coordinates=tempCT.coordinates;
+			break;
+		case "BoxedTile":
+			CleanTile tempB= (CleanTile) visitable;
+			this.coordinates=tempB.coordinates;
+			break;
+		case "Door":
+			Door tempD= (Door) visitable;
+			if (tempD.isPassable()){
+				this.coordinates=tempD.coordinates;
+			}
+			break;
+		case "Wall":
+			break;
+		case "SpecialWall":
+			break;
+		case "Hole":
+			this.coordinates=null;
+			break;
+		case "Scale":
+			Scale tempS= (Scale) visitable;
+			this.coordinates=tempS.coordinates;
+			((Scale) visitable).setWeight(4);
+			/*if(((Scale) visitable).getWeight()>=((Scale) visitable).getWeightLimit()){
+				((Scale) visitable).getDoor()
+			}*/
+			break;
+		case "StarGate":
+			StarGate tempSG= (StarGate) visitable;
+			this.coordinates=tempSG.coordinates;
+			break;
+		}
 		
 	}
 	

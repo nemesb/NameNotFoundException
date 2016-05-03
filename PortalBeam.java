@@ -9,8 +9,7 @@ public class PortalBeam implements Visitor {
 	
 	@Override
 	public void visit(Visitable visitable) {
-		// TODO Auto-generated method stub
-		
+		this.coordinates=((Tile) visitable).coordinates;
 	}
 	
 	public void changeColor(String col){	//Beállítja a lövedék színét.

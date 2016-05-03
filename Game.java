@@ -8,15 +8,19 @@ import java.util.Scanner;
 public class Game {
 	
 	protected ActionController ac;
+	protected View view;
 	int toFile=0;
 
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
 		ac=new ActionController();
+		view=new View();
 		String filename;
 		int file=0;
 		int column=0;
 		int row=0;
+		
+		view.menu();
 		
 	    Scanner scanFileName = new Scanner(System.in);
 	    file=scanFileName.nextInt();

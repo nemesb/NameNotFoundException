@@ -32,10 +32,59 @@ public class ActionController {
 			player.setDirection(direction);
 		else {
 			if(getNextVisitable(player.coordinates, direction)!=null)
-				t=getNextVisitable(player.coordinates, direction).coordinates;
+				// t=getNextVisitable(player.coordinates, direction).coordinates;
+				if(!getNextVisitable(player.coordinates, direction).getClass().getSimpleName().equals("StarGate")){
+					if(visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale")
+							&& !getNextVisitable(player.coordinates, direction).getClass().getSimpleName().equals("Wall")
+							&& !getNextVisitable(player.coordinates, direction).getClass().getSimpleName().equals("SpecialWall")
+							&& (getNextVisitable(player.coordinates, direction).getClass().getSimpleName().equals("Door")
+									&& !((Door)getNextVisitable(player.coordinates, direction)).isPassable())){
+						((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).setWeight(-4);
+						if(((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeight()<((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeightLimit()){
+							if(((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor()!=null){
+								int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
+								if ((((Door) visitables​[tempDoor[0]][tempDoor[1]]).isPassable()))
+									((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+							}
+						}
+					}
+					
+					getNextVisitable(player.coordinates, direction).accept(player);
+				
+					if(visitables​[player.coordinates[0]][player.coordinates[1]].getClass().getSimpleName().equals("Scale")){
+						if(((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeight()>=((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getWeightLimit()){
+							if(((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor()!=null){
+								int[] tempDoor = ((Scale) visitables​[player.coordinates[0]][player.coordinates[1]]).getDoor();
+								if (!(((Door) visitables​[tempDoor[0]][tempDoor[1]]).isPassable()))
+									((Door) visitables​[tempDoor[0]][tempDoor[1]]).changePassable();
+							}
+						}
+					}
+				}
+				else{
+					switch( ((StarGate)getNextVisitable(player.coordinates, direction)).getColor() ){
+					case "blue":
+						if(starGates​[1]!=null)
+							starGates​[1].accept(player);
+						break;
+					case "red":
+						if(starGates​[0]!=null)
+							starGates​[0].accept(player);
+						break;	
+					case "green":
+						if(starGates​[3]!=null)
+							starGates​[3].accept(player);
+						break;
+					case "yellow":
+						if(starGates​[2]!=null)
+							starGates​[2].accept(player);
+						break;
+					
+					}
+				}
 		}
 			
-		if (!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
+		/*if (!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Wall"))
 				&&!(visitables​[t[0]][t[1]].getClass().getSimpleName().equals("SpecialWall"))
 				&& (!visitables​[t[0]][t[1]].getClass().getSimpleName().equals("Door")
 						|| ((Door) visitables​[t[0]][t[1]]).isPassable())) {
@@ -91,7 +140,7 @@ public class ActionController {
 				}
 					
 					player.coordinates = t;
-			}
+			}*/
 		
 	}
 
@@ -202,7 +251,9 @@ public class ActionController {
 		  	}
 
 	private void move(PortalBeam beam) {
-		beam.coordinates=getNextVisitable(beam.coordinates,beam.getDirection()).coordinates;
+		// beam.coordinates=getNextVisitable(beam.coordinates,beam.getDirection()).coordinates;
+		
+		((Tile) getNextVisitable(beam.coordinates,beam.getDirection())).accept(beam);
 	}
 	
 	private void move(Replicator rep){
@@ -223,6 +274,7 @@ public class ActionController {
 				&&beams[i].coordinates[0]!=0&&beams[i].coordinates[1]!=0)
 			move(beams[i]); //mozgatja a pályán lévő lövedékeket
 		}
+		
 		if(replicatorIsAlive&&replicator​!=null&&replicator​.coordinates[0]<rows-1&&replicator​.coordinates[1]<columns-1
 				&&replicator​.coordinates[0]!=0&&replicator​.coordinates[1]!=0){
 			move(replicator​);
@@ -245,7 +297,8 @@ public class ActionController {
 						changeVisitable(visitables​[i][j],
 								new StarGate(beams[b-1].getColor()));
 						switch(beams[b-1].getColor()){
-				  		case "blue":
+				  		case "blue": 
+				  			/*Kék csillagkapu bezárása esetén a csillagkpu*/
 				  			if(starGates​[0]!=null){
 				  			changeVisitable(visitables​[starGates​[0].coordinates[0]][starGates​[0].coordinates[1]],
 				  					new SpecialWall());
