@@ -20,7 +20,7 @@ public class Player implements Visitor{
 			this.coordinates=tempCT.coordinates;
 			break;
 		case "BoxedTile":
-			CleanTile tempB= (CleanTile) visitable;
+			BoxedTile tempB= (BoxedTile) visitable;
 			this.coordinates=tempB.coordinates;
 			break;
 		case "Door":
