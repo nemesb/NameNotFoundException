@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 public class ActionController {
-
+	//proba
 	protected Player players[] = new Player[2]; // A két játékos tárolására
 												// szolgáló tömb.
 	protected Tile[][] visitables​; // A pályán lévő elemeket tároló tömb.
