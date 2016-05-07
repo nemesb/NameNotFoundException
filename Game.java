@@ -154,7 +154,11 @@ public class Game {
 		       				if(i!=row){
 			       			    for(int j = 0; j<ac.columns; j++)
 			       			    {
-			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Scale")&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
+			       			    	if(ac.visitables​[i][j]
+			       			    			.getClass()
+			       			    			.getSimpleName()
+			       			    			.equals("Scale")
+			       			    		&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
 			       			    		((Scale) ac.visitables​[i][j]).setDoor(row,column);
 			       			    	}
 			       			    		
@@ -163,7 +167,11 @@ public class Game {
 		       				else{
 		       				 for(int j = 0; j<column; j++)
 			       			    {
-			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Scale")&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
+			       			    	if(ac.visitables​[i][j]
+			       			    			.getClass()
+			       			    			.getSimpleName()
+			       			    			.equals("Scale")
+			       			    		&&((Scale) ac.visitables​[i][j]).getID()==tempDoor.doorID){
 			       			    		((Scale) ac.visitables​[i][j]).setDoor(row,column);
 			       			    	}
 			       			    		
@@ -183,7 +191,11 @@ public class Game {
 		       				if(i!=row){
 			       			    for(int j = 0; j<ac.columns; j++)
 			       			    {
-			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Door")&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
+			       			    	if(ac.visitables​[i][j]
+			       			    			.getClass()
+			       			    			.getSimpleName()
+			       			    			.equals("Door")
+			       			    		&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
 			       			    		((Scale) ac.visitables​[row][column]).setDoor(i,j);
 			       			    	}
 			       			    		
@@ -192,7 +204,11 @@ public class Game {
 		       				else{
 		       				 for(int j = 0; j<column; j++)
 			       			    {
-			       			    	if(ac.visitables​[i][j].getClass().getSimpleName().equals("Door")&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
+			       			    	if(ac.visitables​[i][j]
+			       			    			.getClass()
+			       			    			.getSimpleName()
+			       			    			.equals("Door")
+			       			    		&&((Door) ac.visitables​[i][j]).getID()==tempScale.scaleID){
 			       			    		((Scale) ac.visitables​[row][column]).setDoor(i,j);
 			       			    	}
 			       			    		
