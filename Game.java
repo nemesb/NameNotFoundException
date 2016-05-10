@@ -9,7 +9,7 @@ public class Game {
 	
 	protected ActionController ac;
 	protected View view;
-	int toFile=0;
+	int toFile=0;	
 
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
@@ -236,77 +236,121 @@ public class Game {
 	    Scanner scanWhere = new Scanner(System.in);
 	    toFile=scanWhere.nextInt();
 		do{
-		    System.out.println("\n");
-		    if(toFile==1)
-		    	ac.writeMap();
-		    else
-		    	ac.getMap();
-			System.out.print("\nAdj meg egy parancsot: ");
-			temp=scanner.next();
+			/* Kirajzolás lock*/		    
+			Output();
+			temp=scanner.next();			
 			
-			switch(temp){
-			/*O'Neill ezredes mozgatása*/
-			case "4": //balra
-				if(ac.players[0]!=null)
-					ac.move(ac.players[0],0);
-				break;
-			case "8": //fel
-				if(ac.players[0]!=null)
-					ac.move(ac.players[0],1);
-				break;
-			case "6": //jobbra
-				if(ac.players[0]!=null)
-					ac.move(ac.players[0],2);
-				break;
-			case "2": //le
-				if(ac.players[0]!=null)
-					ac.move(ac.players[0],3);
-				break;
-			/*Ezredes dobozfelvétele*/
-			case "5":
-				if(ac.players[0]!=null)
-				ac.boxing(ac.players[0]);
-				break;
-			/*Ezredes lövés*/
-			case "+r":
-				if(ac.players[0]!=null)
-				ac.shoot(ac.players[0], "red");
-				break;
-			case "+b":
-				if(ac.players[0]!=null)
-				ac.shoot(ac.players[0], "blue");
-				break;
-			/*Jaffa mozgatása*/
-			case "a": //balra
-				if(ac.players[1]!=null)
-					ac.move(ac.players[1],0);
-				break;
-			case "w": //fel
-				if(ac.players[1]!=null)
-					ac.move(ac.players[1],1);
-				break;
-			case "d": //jobbra
-				if(ac.players[1]!=null)
-					ac.move(ac.players[1],2);
-				break;
-			case "s": //le
-				if(ac.players[1]!=null)
-					ac.move(ac.players[1],3);
-				break;
-			/*Jaffa dobozfelvétele*/
-			case "e":
-				if(ac.players[1]!=null)
-				ac.boxing(ac.players[0]);
-				break;
-			/*Jaffa lövés*/
-			case "+g":
-				if(ac.players[1]!=null)
-				ac.shoot(ac.players[1], "gree");
-				break;
-			case "+y":
-				if(ac.players[1]!=null)
-				ac.shoot(ac.players[1], "yellow");
-			}
+			/*ONeill(temp);
+			Jaffa(temp);*/
 		}while(!(temp.equals("exit")));
+	}	
+	
+	
+	
+	private void Output() throws FileNotFoundException, UnsupportedEncodingException{
+		System.out.println("\n");
+	    if(toFile==1)
+	    	ac.writeMap();
+	    else
+	    	ac.getMap();
+		System.out.print("\nAdj meg egy parancsot: ");
+	}
+	
+	private void ONeill(String temp){		
+		switch(temp){
+		/*O'Neill ezredes mozgatása*/
+		case "4": //balra
+			if(ac.players[0]!=null)
+				ac.move(ac.players[0],0);
+			break;
+		case "8": //fel
+			if(ac.players[0]!=null)
+				ac.move(ac.players[0],1);
+			break;
+		case "6": //jobbra
+			if(ac.players[0]!=null)
+				ac.move(ac.players[0],2);
+			break;
+		case "2": //le
+			if(ac.players[0]!=null)
+				ac.move(ac.players[0],3);
+			break;
+		/*Ezredes dobozfelvétele*/
+		case "5":
+			if(ac.players[0]!=null)
+			ac.boxing(ac.players[0]);
+			break;
+		/*Ezredes lövés*/
+		case "+r":
+			if(ac.players[0]!=null)
+			ac.shoot(ac.players[0], "red");
+			break;
+		case "+b":
+			if(ac.players[0]!=null)
+			ac.shoot(ac.players[0], "blue");
+			break;
 	}
 }
+	
+	private void Jaffa(String temp){		
+		switch(temp){
+		case "a": //balra
+		if(ac.players[1]!=null)
+			ac.move(ac.players[1],0);
+		break;
+		case "w": //fel
+		if(ac.players[1]!=null)
+			ac.move(ac.players[1],1);
+		break;
+		case "d": //jobbra
+		if(ac.players[1]!=null)
+			ac.move(ac.players[1],2);
+		break;
+		case "s": //le
+		if(ac.players[1]!=null)
+			ac.move(ac.players[1],3);
+		break;
+		/*Jaffa dobozfelvétele*/
+		case "e":
+		if(ac.players[1]!=null)
+		ac.boxing(ac.players[0]);
+		break;
+		/*Jaffa lövés*/
+		case "+g":
+		if(ac.players[1]!=null)
+		ac.shoot(ac.players[1], "gree");
+		break;
+		case "+y":
+		if(ac.players[1]!=null)
+		ac.shoot(ac.players[1], "yellow");
+		}
+		
+	}
+
+
+	private class ONeillThread implements Runnable{
+		@Override
+		public void run() {	
+			String temp;
+			Scanner scanner = new Scanner(System.in);
+			while(true){				
+				temp=scanner.next();	
+				ONeill(temp);
+			}
+		}		
+	}
+	
+	private class JaffaThread implements Runnable{
+
+		@Override
+		public void run() {
+			String temp;
+			Scanner scanner = new Scanner(System.in);
+			while(true){				
+				temp=scanner.next();	
+				Jaffa(temp);
+			}			
+		}		
+	}	
+}
+

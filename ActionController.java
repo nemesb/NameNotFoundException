@@ -6,6 +6,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 public class ActionController {
+	
+	
+	private Object locker = new Object();
+	
 	//test
 	protected Player players[] = new Player[2]; // A két játékos tárolására
 												// szolgáló tömb.
@@ -26,7 +30,7 @@ public class ActionController {
 	// visitor-t
 	/* 0:balra 1:fel 2:jobbra 3:le */
 	public void move(Player player, int direction) { 		
-
+		synchronized(locker){
 		int[] t = new int[2];
 		if (player.getDirection() != direction)
 			player.setDirection(direction);
@@ -159,10 +163,11 @@ public class ActionController {
 					
 					player.coordinates = t;
 			}*/
-		
+		}
 	}
 
 	public void boxing(Player player) {
+		synchronized(locker){
 		if (!player.getBox()) {
 			if (getNextVisitable(player.coordinates, player.getDirection())
 					.getClass()
@@ -214,6 +219,7 @@ public class ActionController {
 				}
 			}
 			player.changeBox();
+		}
 		}
 	}
 
@@ -276,6 +282,7 @@ public class ActionController {
 
 	//az adott visitor adott színű lövedéket lő ki
 	public void shoot(Player visitor,String color){ 
+		synchronized(locker){
 		  		PortalBeam beam= new PortalBeam();
 		  		beam.changeColor(color);
 		  		beam.coordinates=new int[2];
@@ -296,6 +303,7 @@ public class ActionController {
 		  				break;
 		  		}		 		
 		  	}
+		}
 
 	private void move(PortalBeam beam) {
 		// beam.coordinates=getNextVisitable(beam.coordinates,beam.getDirection()).coordinates;
