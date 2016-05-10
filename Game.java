@@ -235,6 +235,16 @@ public class Game {
 	    System.out.print("Add meg, hogy consol-ra vagy fájlba szeretnél írni (0:consol, 1:fájl): ");
 	    Scanner scanWhere = new Scanner(System.in);
 	    toFile=scanWhere.nextInt();
+	    
+	    /*szálak indítása*/
+	    ONeillThread colonel = new ONeillThread();
+	    Thread player1 = new Thread(colonel);
+	    JaffaThread jaffa = new JaffaThread();
+	    Thread player2 = new Thread(jaffa);
+	    
+	    player1.start();
+	    player2.start();
+	    
 		do{
 			/* Kirajzolás lock*/		    
 			Output();
