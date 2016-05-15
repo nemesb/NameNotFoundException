@@ -250,29 +250,34 @@ public class Game {
 	    player1.start();
 	    player2.start();*/
 	    
+	    ViewThread VT = new ViewThread();
+	    Thread viewthread = new Thread(VT);
+	    viewthread.start();
+	    
 		do{
 			/* Kirajzolás lock*/		    
-			try {
+			/*try {
 				Output();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
+			System.out.print("\nAdj meg egy parancsot: ");
 			temp=scanner.next();			
 			
 			ONeill(temp);
-			Jaffa(temp);
+			Jaffa(temp);			
 		}while(!(temp.equals("exit")));
 	}	
 	
 	
 	
 	private void Output() throws IOException{
-		System.out.println("\n");
-	    if(toFile==1)
-	    	ac.writeMap();
-	    else
-	    	ac.getMap();
+		//System.out.println("\n");
+	    //if(toFile==1)
+	    //	ac.writeMap();
+	    //else
+	    //	ac.getMap();
 	    //pálya
 	    for(int i = 0; i < ac.getRows();i++){
 	    	for(int j = 0; j < ac.getColumns();j++){
@@ -301,9 +306,10 @@ public class Game {
 	    	boolean o = true;	    	
 	    	int row = p.getRow();
 	    	int column = p.getColumn();
+	    	int direction = p.getDirection();
 	    	if (i == 1)	    		
 	    		o = false;
-	    	new PlayerView(view).drawPlayer(row, column, o);
+	    	new PlayerView(view).drawPlayer(row, column, o, direction);
 	    }
 	    
 	    //lövedékek
@@ -318,7 +324,7 @@ public class Game {
 	    	}
 	    }
 	    
-		System.out.print("\nAdj meg egy parancsot: ");
+		//System.out.print("\nAdj meg egy parancsot: ");
 	}
 	
 	private void ONeill(String temp){		
@@ -393,6 +399,30 @@ public class Game {
 	}
 
 
+	private class ViewThread implements Runnable{
+
+		@Override
+		public void run() {
+			while(true){
+				try {
+					Output();
+					ac.play();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					Thread.sleep(33);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+							
+		}
+		
+	}
+	
 	private class ONeillThread implements Runnable{
 		@Override
 		public void run() {	

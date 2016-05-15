@@ -7,14 +7,17 @@ import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class View extends JFrame{
 
 	private JPanel map;
 	
 	public void menu(){
-		this.setVisible(true);		
+		this.setVisible(true);	
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
+	
 	
 	public void setMap(int columns, int rows){
 		map = new JPanel();

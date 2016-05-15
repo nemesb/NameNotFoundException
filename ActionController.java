@@ -313,6 +313,11 @@ public class ActionController {
 				.accept(beam);
 	}
 	
+	public void play(){
+		moveBeams();
+		moveReplicators();
+	}
+	
 	private void move(Replicator rep){
 		int[] temp=getNextVisitable(rep.coordinates,rep
 				.getDirection())
