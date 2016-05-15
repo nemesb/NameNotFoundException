@@ -1,5 +1,7 @@
 package projlab;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import javax.swing.JFrame;
 public class Game {
 	
 	protected ActionController ac;
-	protected View view = new View();
+	protected View view = new View();	
 	int toFile=0;	
 
 	WallView WV = new WallView(view);
@@ -242,6 +244,7 @@ public class Game {
 	    }
 	    scanner.close();
 	    view.setMap(column, row);
+	    view.addMyKeyListener(new MKeyListener());
 	}
 	
 	public void play() throws FileNotFoundException, UnsupportedEncodingException{	//​Meghívásakor elindul a játék. Innentől kezdve az ActionController feladata a bemenetek kezelése.
@@ -273,7 +276,7 @@ public class Game {
 	    Thread viewthread = new Thread(VT);
 	    viewthread.start();
 	    
-		do{
+		//do{
 			/* Kirajzolás lock*/		    
 			/*try {
 				Output();
@@ -281,13 +284,14 @@ public class Game {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			System.out.print("\nAdj meg egy parancsot: ");
-			temp=scanner.next();			
+			//System.out.print("\nAdj meg egy parancsot: ");
+			//temp=scanner.next();			
 			
-			ONeill(temp);
-			Jaffa(temp);			
-		}while(!(temp.equals("exit")));
+			//ONeill(temp);
+			//Jaffa(temp);			
+		//}while(!(temp.equals("exit")));
 	}	
+	
 	
 	
 	private void drawWalls() throws IOException{
@@ -381,11 +385,11 @@ public class Game {
 			ac.boxing(ac.players[0]);
 			break;
 		/*Ezredes lövés*/
-		case "+r":
+		case "7":
 			if(ac.players[0]!=null)
 			ac.shoot(ac.players[0], "red");
 			break;
-		case "+b":
+		case "9":
 			if(ac.players[0]!=null)
 			ac.shoot(ac.players[0], "blue");
 			break;
@@ -411,16 +415,16 @@ public class Game {
 			ac.move(ac.players[1],3);
 		break;
 		/*Jaffa dobozfelvétele*/
-		case "e":
+		case "r":
 		if(ac.players[1]!=null)
 		ac.boxing(ac.players[0]);
 		break;
 		/*Jaffa lövés*/
-		case "+g":
+		case "q":
 		if(ac.players[1]!=null)
-		ac.shoot(ac.players[1], "gree");
+		ac.shoot(ac.players[1], "green");
 		break;
-		case "+y":
+		case "e":
 		if(ac.players[1]!=null)
 		ac.shoot(ac.players[1], "yellow");
 		}
@@ -476,5 +480,17 @@ public class Game {
 			}			
 		}		
 	}	
+
+	class MKeyListener extends KeyAdapter {
+
+	    @Override
+	    public void keyPressed(KeyEvent event) {
+	    	String ch = "" + event.getKeyChar();	
+	    	ONeill(ch);
+	    	Jaffa(ch);
+	    }
+	}
+
+
 }
 
