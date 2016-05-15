@@ -268,6 +268,11 @@ public class Game {
 	    
 	    try {
 			drawWalls();
+			for(int i = 0; i < ac.getRows();i++){
+		    	for(int j = 0; j < ac.getColumns();j++){		    		
+		    			drawTile(i,j);
+		    	}
+		    }  
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -294,7 +299,22 @@ public class Game {
 	}	
 	
 	
-	
+	private void drawTile(int i, int j) throws IOException{
+		Visitable v = ac.getTile(i, j);
+		String classname = v.getClass()
+				.getName()
+				.substring(8);
+		switch(classname){
+			//case "Wall": new WallView(view).drawWall(i, j); break;
+			case "CleanTile": CTV.drawCleanTile(i, j); break;
+			case "BoxedTile": BTV.drawBoxedTile(i, j); break;
+			case "Door": DV.drawDoor(i, j, (Door)v); break;
+			case "Hole": HV.drawHole(i, j); break;
+			case "Scale": SV.drawScale(i, j, (Scale)v); break;
+			case "StarGate": SGV.drawGate(i, j, (StarGate)v); break;	   
+			case "SpecialWall": SWV.drawSpecialWall(i, j); break;
+		}
+	}
 	private void drawWalls() throws IOException{
 		 for(int i = 0; i < ac.getRows();i++){
 		    	for(int j = 0; j < ac.getColumns();j++){
@@ -316,24 +336,16 @@ public class Game {
 	    //else
 	    //	ac.getMap();
 	    //pálya		
+		
+		int oRow = ac.getPlayer(0).getRow();
+		int oColumn = ac.getPlayer(0).getColumn();
+		
 	    for(int i = 0; i < ac.getRows();i++){
 	    	for(int j = 0; j < ac.getColumns();j++){
-	    		Visitable v = ac.getTile(i, j);
-	    		String classname = v.getClass()
-	    				.getName()
-	    				.substring(8);
-	    		switch(classname){
-	    			//case "Wall": new WallView(view).drawWall(i, j); break;
-	    			case "CleanTile": CTV.drawCleanTile(i, j); break;
-	    			case "BoxedTile": BTV.drawBoxedTile(i, j); break;
-	    			case "Door": DV.drawDoor(i, j, (Door)v); break;
-	    			case "Hole": HV.drawHole(i, j); break;
-	    			case "Scale": SV.drawScale(i, j, (Scale)v); break;
-	    			case "StarGate": SGV.drawGate(i, j, (StarGate)v); break;	   
-	    			case "SpecialWall": SWV.drawSpecialWall(i, j); break;
-	    		}
+	    		if(i != oRow || j != oColumn)
+	    			drawTile(i,j);
 	    	}
-	    }	    
+	    }  
 	    //playerek
 	    for(int i = 0; i < 2; i++){
 	    	Player p = ac.getPlayer(i);
@@ -345,6 +357,10 @@ public class Game {
 	    	int direction = p.getDirection();
 	    	if (i == 1)
 	    		o = false;
+	    	if(direction != pDirection){
+	    		pDirection = direction;
+	    		drawTile(row,column);
+	    	}
 	    	PV.drawPlayer(row, column, o, direction);
 	    }
 	    
@@ -445,14 +461,14 @@ public class Game {
 		public void run() {
 			while(true){
 				try {
-					Output();
 					ac.getMap();
+					Output();					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				try {
-					Thread.sleep(33);
+					Thread.sleep(70);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -495,6 +511,12 @@ public class Game {
 	    	String ch = "" + event.getKeyChar();	
 	    	ONeill(ch);
 	    	Jaffa(ch);
+	    	try {
+				Thread.sleep(70);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    }
 	}
 
