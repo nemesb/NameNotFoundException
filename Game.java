@@ -2,8 +2,11 @@ package projlab;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
 
 public class Game {
 	
@@ -226,7 +229,7 @@ public class Game {
 	       }
 	    }
 	    scanner.close();
-	    
+	    view.setMap(column, row);
 	}
 	
 	public void play() throws FileNotFoundException, UnsupportedEncodingException{	//​Meghívásakor elindul a játék. Innentől kezdve az ActionController feladata a bemenetek kezelése.
@@ -236,33 +239,85 @@ public class Game {
 	    Scanner scanWhere = new Scanner(System.in);
 	    toFile=scanWhere.nextInt();
 	    
+	    //JFrame frame = buildFrame();
+	    
 	    /*szálak indítása*/
-	    ONeillThread colonel = new ONeillThread();
+	    /*ONeillThread colonel = new ONeillThread();
 	    Thread player1 = new Thread(colonel);
 	    JaffaThread jaffa = new JaffaThread();
 	    Thread player2 = new Thread(jaffa);
 	    
 	    player1.start();
-	    player2.start();
+	    player2.start();*/
 	    
 		do{
 			/* Kirajzolás lock*/		    
-			Output();
+			try {
+				Output();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			temp=scanner.next();			
 			
-			/*ONeill(temp);
-			Jaffa(temp);*/
+			ONeill(temp);
+			Jaffa(temp);
 		}while(!(temp.equals("exit")));
 	}	
 	
 	
 	
-	private void Output() throws FileNotFoundException, UnsupportedEncodingException{
+	private void Output() throws IOException{
 		System.out.println("\n");
 	    if(toFile==1)
 	    	ac.writeMap();
 	    else
 	    	ac.getMap();
+	    //pálya
+	    for(int i = 0; i < ac.getRows();i++){
+	    	for(int j = 0; j < ac.getColumns();j++){
+	    		Visitable v = ac.getTile(i, j);
+	    		String classname = v.getClass()
+	    				.getName()
+	    				.substring(8);
+	    		switch(classname){
+	    			case "Wall": new WallView(view).drawWall(i, j); break;
+	    			case "CleanTile": new CleanTileView(view).drawCleanTile(i, j); break;
+	    			case "BoxedTile": new BoxedTileView(view).drawBoxedTile(i, j); break;
+	    			case "Door": new DoorView(view).drawDoor(i, j, (Door)v); break;
+	    			case "Hole": new HoleView(view).drawHole(i, j); break;
+	    			case "Scale": new ScaleView(view).drawScale(i, j, (Scale)v); break;
+	    			case "StarGate": new StarGateView(view).drawGate(i, j, (StarGate)v); break;	   
+	    			case "SpecialWall": new SpecialWallView(view).drawSpecialWall(i, j); break;
+	    		}
+	    	}
+	    }
+	    
+	    //playerek
+	    for(int i = 0; i < 2; i++){
+	    	Player p = ac.getPlayer(i);
+	    	if (p == null)
+	    		break;
+	    	boolean o = true;	    	
+	    	int row = p.getRow();
+	    	int column = p.getColumn();
+	    	if (i == 1)	    		
+	    		o = false;
+	    	new PlayerView(view).drawPlayer(row, column, o);
+	    }
+	    
+	    //lövedékek
+	    for(int i = 0; i < 4;i++){
+	    	PortalBeam b = ac.beams[i];
+	    	if(b != null){	    		
+	    	int row = b.coordinates[0];
+	    	int column = b.coordinates[1];
+	    	String color = b.getColor();
+	    	int direction = b.getDirection();
+	    	new PortalBeamView(view).drawBeam(row, column, color, direction);
+	    	}
+	    }
+	    
 		System.out.print("\nAdj meg egy parancsot: ");
 	}
 	

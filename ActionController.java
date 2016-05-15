@@ -333,16 +333,21 @@ public class ActionController {
 		else
 			rep.coordinates=temp;
 	}
-	public void getMap() {
+	
+	//lövedékek mozgatása
+	private void moveBeams(){
 		for(int i=0;i<4;i++){ 
-		if(beams[i]!=null
-				&&beams[i].coordinates[0]<rows-1
-				&&beams[i].coordinates[1]<columns-1
-				&&beams[i].coordinates[0]!=0
-				&&beams[i].coordinates[1]!=0)
-			move(beams[i]); //mozgatja a pályán lévő lövedékeket
-		}
-		
+			if(beams[i]!=null
+					&&beams[i].coordinates[0]<rows-1
+					&&beams[i].coordinates[1]<columns-1
+					&&beams[i].coordinates[0]!=0
+					&&beams[i].coordinates[1]!=0)
+				move(beams[i]); //mozgatja a pályán lévő lövedékeket
+			}
+	}
+	
+	// replikátorok mozgatása
+	private void moveReplicators(){
 		if(replicatorIsAlive
 				&&replicator​!=null
 				&&replicator​.coordinates[0]<rows-1
@@ -351,6 +356,30 @@ public class ActionController {
 				&&replicator​.coordinates[1]!=0){
 			move(replicator​);
 		}
+	}
+	
+	public Visitable getTile(int i, int j){
+		return visitables​[i][j];
+	}
+	
+	public Player getPlayer(int i){
+		return players[i];
+	}  
+	
+	public int getRows(){
+		return rows;
+	}
+	
+	public int getColumns(){
+		return columns;
+	}
+	
+	// Ezeket át kéne vinni Game-be
+	public void getMap() {
+		// Lövedékek mozgatása
+		moveBeams();		
+		// Replikátor mozgatása
+		moveReplicators();
 			
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
@@ -675,7 +704,7 @@ public class ActionController {
 								&& j == players[1].getColumn())
 							writer.print("J");
 						else{
-						writer.print("P");
+						writer.print("P");						
 						switch( ((StarGate)visitables​[i][j]).getColor() ){
 						case "blue":
 							writer.print("b");
