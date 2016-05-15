@@ -342,6 +342,8 @@ public class Game {
 	    	int row = p.getRow();
 	    	int column = p.getColumn();
 	    	int direction = p.getDirection();
+	    	if (i == 1)
+	    		o = false;
 	    	PV.drawPlayer(row, column, o, direction);
 	    }
 	    
