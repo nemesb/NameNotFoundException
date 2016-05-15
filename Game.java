@@ -27,6 +27,7 @@ public class Game {
 	PlayerView PV = new PlayerView(view);
 	PortalBeamView PBV = new PortalBeamView(view);	
 	ReplicatorView RV = new ReplicatorView(view);
+	ZPMView ZV = new ZPMView(view);
 	int pDirection = -1;
 	
 	
@@ -306,7 +307,11 @@ public class Game {
 				.substring(8);
 		switch(classname){
 			//case "Wall": new WallView(view).drawWall(i, j); break;
-			case "CleanTile": CTV.drawCleanTile(i, j); break;
+			case "CleanTile": 
+				CTV.drawCleanTile(i, j);
+				if(((CleanTile) v).getZPM())
+					ZV.drawZPM(i, j);
+			break;
 			case "BoxedTile": BTV.drawBoxedTile(i, j); break;
 			case "Door": DV.drawDoor(i, j, (Door)v); break;
 			case "Hole": HV.drawHole(i, j); break;
