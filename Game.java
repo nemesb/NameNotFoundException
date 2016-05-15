@@ -26,6 +26,7 @@ public class Game {
 	SpecialWallView SWV = new SpecialWallView(view);
 	PlayerView PV = new PlayerView(view);
 	PortalBeamView PBV = new PortalBeamView(view);	
+	ReplicatorView RV = new ReplicatorView(view);
 	int pDirection = -1;
 	
 	
@@ -358,6 +359,10 @@ public class Game {
 	    	PBV.drawBeam(row, column, color, direction);
 	    	}
 	    }
+	    
+	    //replikátor
+	    if(ac.replicatorIsAlive)
+	    RV.drawReplicator(ac.getReplicatorX(), ac.getReplicatorY());
 	    
 		//System.out.print("\nAdj meg egy parancsot: ");
 	}

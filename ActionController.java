@@ -363,6 +363,14 @@ public class ActionController {
 		}
 	}
 	
+	public int getReplicatorX(){
+		return replicator​.coordinates[0];
+	}
+	
+	public int getReplicatorY(){
+		return replicator​.coordinates[1];
+	}
+	
 	public Visitable getTile(int i, int j){
 		return visitables​[i][j];
 	}
