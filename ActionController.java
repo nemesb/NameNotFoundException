@@ -379,7 +379,7 @@ public class ActionController {
 		return columns;
 	}
 	
-	// Ezeket át kéne vinni Game-be
+	// Ezeket át kéne vinni Game-be - DONE
 	public void getMap() {
 		// Lövedékek mozgatása
 		moveBeams();		
@@ -438,15 +438,15 @@ public class ActionController {
 				  			break;
 				  		}		 		
 						beams[b-1]= null;
-						System.out.print("Ws");
+						//System.out.print("Ws");
 					}
-					else if(!hasBeam){
+					/*else if(!hasBeam){
 						System.out.print("Ws");
 						if (j != columns - 1)
 							System.out.print(",");
-						}
+						}*/
 					break;
-				case "StarGate":
+				/*case "StarGate":
 					if (players[0] != null 
 						&& i == players[0].getRow() 
 						&& j == players[0].getColumn())
@@ -474,7 +474,7 @@ public class ActionController {
 					}
 					if (j != columns - 1)
 						System.out.print(",");
-					break;
+					break;*/
 				case "Wall":
 					b=0;
 					while(b<4){
@@ -484,9 +484,9 @@ public class ActionController {
 						beams[b]= null;					}
 						b++;
 					}
-					System.out.print("W");
-					if (j != columns - 1)
-						System.out.print(",");
+					//System.out.print("W");
+					/*if (j != columns - 1)
+						System.out.print(",");*/
 					break;
 				case "BoxedTile":
 					b=0;
@@ -500,7 +500,7 @@ public class ActionController {
 						}
 						b++;
 					}
-					if(hasBeam)
+					/*if(hasBeam)
 						System.out.print("*,");
 					else if (players[0] != null 
 							&& i == players[0].getRow() 
@@ -511,7 +511,7 @@ public class ActionController {
 							&& j == players[1].getColumn())
 						System.out.print("J,");
 					else
-						System.out.print("B,");
+						System.out.print("B,");*/
 					break;
 				case "CleanTile":
 					b=0;
@@ -525,7 +525,7 @@ public class ActionController {
 						}
 						b++;
 					}
-					if(hasBeam)
+					/*if(hasBeam)
 						System.out.print("*,");
 					else if (players[0] != null 
 							&& i == players[0].getRow() 
@@ -542,7 +542,7 @@ public class ActionController {
 					else if(((CleanTile) visitables​[i][j]).getZPM())
 						System.out.print("Z,");
 					else
-						System.out.print("C,");
+						System.out.print("C,");*/
 					break;
 				case "Hole":
 					b=0;
@@ -562,18 +562,18 @@ public class ActionController {
 							&& i == players[0].getRow() 
 							&& j == players[0].getColumn()){
 						players[0]=null;
-						System.out.print("H");
+						//System.out.print("H");
 						}
 					else if (players[1] != null 
 							&& i == players[1].getRow() 
 							&& j == players[1].getColumn()){
 						players[0]=null;
-					System.out.print("H");
+					//System.out.print("H");
 					}
-					else
+					/*else
 						System.out.print("H");
 					if (j != columns - 1)
-						System.out.print(",");
+						System.out.print(",");*/
 					break;
 				case "Scale":
 					b=0;
@@ -587,7 +587,7 @@ public class ActionController {
 						}
 						b++;
 					}
-					if(hasBeam)
+					/*if(hasBeam)
 						System.out.print("*,");
 					else if (players[0] != null 
 							&& i == players[0].getRow() 
@@ -601,10 +601,10 @@ public class ActionController {
 						System.out.print("B,");
 					else
 						System.out.print("S" + ((Scale) visitables​[i][j]).getID() + "."
-								+ ((Scale) visitables​[i][j]).getWeightLimit() + ",");
+								+ ((Scale) visitables​[i][j]).getWeightLimit() + ",");*/
 					break;
 				case "Door":
-					if (players[0] != null 
+					/*if (players[0] != null 
 						&& i == players[0].getRow() 
 						&& j == players[0].getColumn())
 						System.out.print("O,");
@@ -613,14 +613,14 @@ public class ActionController {
 							&& j == players[1].getColumn())
 						System.out.print("J,");
 					else
-						System.out.print("D" + ((Door) visitables​[i][j]).getID() + ",");
+						System.out.print("D" + ((Door) visitables​[i][j]).getID() + ",");*/
 					break;
 				default:
-					System.out.print(visitables​[i][j].getClass().getSimpleName() + ",");
+					//System.out.print(visitables​[i][j].getClass().getSimpleName() + ",");
 				}
 				
 			}
-			System.out.println();
+			//System.out.println();
 		}
 	}
 

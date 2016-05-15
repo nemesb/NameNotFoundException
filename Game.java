@@ -11,13 +11,25 @@ import javax.swing.JFrame;
 public class Game {
 	
 	protected ActionController ac;
-	protected View view;
+	protected View view = new View();
 	int toFile=0;	
 
+	WallView WV = new WallView(view);
+	CleanTileView CTV = new CleanTileView(view);
+	BoxedTileView BTV = new BoxedTileView(view);
+	DoorView DV = new DoorView(view);
+	HoleView HV = new HoleView(view);
+	ScaleView SV = new ScaleView(view);
+	StarGateView SGV = new StarGateView(view);	   
+	SpecialWallView SWV = new SpecialWallView(view);
+	PlayerView PV = new PlayerView(view);
+	PortalBeamView PBV = new PortalBeamView(view);	
+	int pDirection = -1;
+	
+	
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
-		ac=new ActionController();
-		view=new View();
+		ac=new ActionController();		
 		String filename;
 		int file=0;
 		int column=0;
@@ -250,6 +262,13 @@ public class Game {
 	    player1.start();
 	    player2.start();*/
 	    
+	    try {
+			drawWalls();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	    ViewThread VT = new ViewThread();
 	    Thread viewthread = new Thread(VT);
 	    viewthread.start();
@@ -271,6 +290,19 @@ public class Game {
 	}	
 	
 	
+	private void drawWalls() throws IOException{
+		 for(int i = 0; i < ac.getRows();i++){
+		    	for(int j = 0; j < ac.getColumns();j++){
+		    		Visitable v = ac.getTile(i, j);
+		    		String classname = v.getClass()
+		    				.getName()
+		    				.substring(8);
+		    		switch(classname){
+		    			case "Wall": WV.drawWall(i, j); break;		    			
+		    		}
+		    	}
+		    }
+	}
 	
 	private void Output() throws IOException{
 		//System.out.println("\n");
@@ -278,7 +310,7 @@ public class Game {
 	    //	ac.writeMap();
 	    //else
 	    //	ac.getMap();
-	    //pálya
+	    //pálya		
 	    for(int i = 0; i < ac.getRows();i++){
 	    	for(int j = 0; j < ac.getColumns();j++){
 	    		Visitable v = ac.getTile(i, j);
@@ -286,18 +318,17 @@ public class Game {
 	    				.getName()
 	    				.substring(8);
 	    		switch(classname){
-	    			case "Wall": new WallView(view).drawWall(i, j); break;
-	    			case "CleanTile": new CleanTileView(view).drawCleanTile(i, j); break;
-	    			case "BoxedTile": new BoxedTileView(view).drawBoxedTile(i, j); break;
-	    			case "Door": new DoorView(view).drawDoor(i, j, (Door)v); break;
-	    			case "Hole": new HoleView(view).drawHole(i, j); break;
-	    			case "Scale": new ScaleView(view).drawScale(i, j, (Scale)v); break;
-	    			case "StarGate": new StarGateView(view).drawGate(i, j, (StarGate)v); break;	   
-	    			case "SpecialWall": new SpecialWallView(view).drawSpecialWall(i, j); break;
+	    			//case "Wall": new WallView(view).drawWall(i, j); break;
+	    			case "CleanTile": CTV.drawCleanTile(i, j); break;
+	    			case "BoxedTile": BTV.drawBoxedTile(i, j); break;
+	    			case "Door": DV.drawDoor(i, j, (Door)v); break;
+	    			case "Hole": HV.drawHole(i, j); break;
+	    			case "Scale": SV.drawScale(i, j, (Scale)v); break;
+	    			case "StarGate": SGV.drawGate(i, j, (StarGate)v); break;	   
+	    			case "SpecialWall": SWV.drawSpecialWall(i, j); break;
 	    		}
 	    	}
-	    }
-	    
+	    }	    
 	    //playerek
 	    for(int i = 0; i < 2; i++){
 	    	Player p = ac.getPlayer(i);
@@ -307,9 +338,7 @@ public class Game {
 	    	int row = p.getRow();
 	    	int column = p.getColumn();
 	    	int direction = p.getDirection();
-	    	if (i == 1)	    		
-	    		o = false;
-	    	new PlayerView(view).drawPlayer(row, column, o, direction);
+	    	PV.drawPlayer(row, column, o, direction);
 	    }
 	    
 	    //lövedékek
@@ -320,7 +349,7 @@ public class Game {
 	    	int column = b.coordinates[1];
 	    	String color = b.getColor();
 	    	int direction = b.getDirection();
-	    	new PortalBeamView(view).drawBeam(row, column, color, direction);
+	    	PBV.drawBeam(row, column, color, direction);
 	    	}
 	    }
 	    
@@ -406,7 +435,7 @@ public class Game {
 			while(true){
 				try {
 					Output();
-					ac.play();
+					ac.getMap();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
