@@ -31,7 +31,7 @@ public class Game {
 	int pDirection = -1; // feljegyezzük a játékos pozícióját
 	
 	
-	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
+	public void run() throws FileNotFoundException, IOException{ //A játékot készíti elő. Létrehozza az ActionControllert.
 	
 		ac=new ActionController();		
 		String filename;
@@ -39,11 +39,11 @@ public class Game {
 		int column=0;
 		int row=0;
 		
-		view.menu();
+		filename = view.menu();
 		
-	    Scanner scanFileName = new Scanner(System.in);
-	    file=scanFileName.nextInt();
-	    switch(file){
+	    //Scanner scanFileName = new Scanner(System.in);
+	    //file=scanFileName.nextInt();
+	    /*switch(file){
 	    case 1:
 	    	filename="test1.csv";
 	    	break;
@@ -66,8 +66,8 @@ public class Game {
 	    	filename="test7.csv";
 	    	break;
 	    default:
-	    	filename="level3.csv";
-	    }
+	    	Filename="level3.csv";
+	    }*/
 		Scanner scanner = new Scanner(new File(filename)); //Itt nyitjuk meg a beolvasandó pályát
 	    scanner.useDelimiter(",");
 	    System.out.print(" ");  
