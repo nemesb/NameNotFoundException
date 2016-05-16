@@ -282,6 +282,9 @@ public class Game {
 	    ViewThread VT = new ViewThread();
 	    Thread viewthread = new Thread(VT);
 	    viewthread.start();
+	    ReplicatorThread RT = new ReplicatorThread();
+	    Thread repthread = new Thread(RT);
+	    repthread.start();
 	    
 		//do{
 			/* Kirajzolás lock*/		    
@@ -345,10 +348,15 @@ public class Game {
 		int oRow = ac.getPlayer(0).getRow();
 		int oColumn = ac.getPlayer(0).getColumn();
 		
+		
 	    for(int i = 0; i < ac.getRows();i++){
 	    	for(int j = 0; j < ac.getColumns();j++){
-	    		if(i != oRow || j != oColumn)
-	    			drawTile(i,j);
+	    		if(i != oRow || j != oColumn){
+	    			if(!ac.replicatorIsAlive)
+	    				drawTile(i,j);
+	    			else if (ac.getReplicatorX() != i || ac.getReplicatorY() != j)
+	    				drawTile(i,j);
+	    		}  	    					
 	    	}
 	    }  
 	    //playerek
@@ -382,8 +390,10 @@ public class Game {
 	    }
 	    
 	    //replikátor
-	    if(ac.replicatorIsAlive)
-	    RV.drawReplicator(ac.getReplicatorX(), ac.getReplicatorY());
+	    if(ac.replicatorIsAlive){
+	    	RV.drawReplicator(ac.getReplicatorX(), ac.getReplicatorY());
+	    }
+	    
 	    
 		//System.out.print("\nAdj meg egy parancsot: ");
 	}
@@ -460,6 +470,23 @@ public class Game {
 	}
 
 
+	private class ReplicatorThread implements Runnable{
+
+		@Override
+		public void run() {
+			while(ac.replicatorIsAlive){
+				ac.moveReplicators();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}			
+		}
+		
+	}
+	
 	private class ViewThread implements Runnable{
 
 		@Override
@@ -473,13 +500,12 @@ public class Game {
 					e.printStackTrace();
 				}
 				try {
-					Thread.sleep(70);
+					Thread.sleep(20);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-							
+			}							
 		}
 		
 	}
@@ -517,7 +543,7 @@ public class Game {
 	    	ONeill(ch);
 	    	Jaffa(ch);
 	    	try {
-				Thread.sleep(70);
+				Thread.sleep(40);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

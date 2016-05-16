@@ -312,11 +312,7 @@ public class ActionController {
 				.getDirection()))
 				.accept(beam);
 	}
-	
-	public void play(){
-		moveBeams();
-		moveReplicators();
-	}
+
 	
 	private void move(Replicator rep){
 		int[] temp=getNextVisitable(rep.coordinates,rep
@@ -352,7 +348,7 @@ public class ActionController {
 	}
 	
 	// replikátorok mozgatása
-	private void moveReplicators(){
+	public void moveReplicators(){
 		if(replicatorIsAlive
 				&&replicator​!=null
 				&&replicator​.coordinates[0]<rows-1
@@ -392,7 +388,7 @@ public class ActionController {
 		// Lövedékek mozgatása
 		moveBeams();		
 		// Replikátor mozgatása
-		moveReplicators();
+		//moveReplicators();
 			
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {

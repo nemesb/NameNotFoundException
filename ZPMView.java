@@ -6,15 +6,15 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class BoxedTileView {
+public class ZPMView {
 	View view;
 	Image img;
-	public BoxedTileView(View v){
+	public ZPMView(View v){
 		view = v;
 	}
-	public void drawBoxedTile(int x, int y) throws IOException{
+	public void drawZPM(int x, int y) throws IOException{
 		if (img == null)
-			img = ImageIO.read(new File("src/projlab/map/box.png"));
+			img = ImageIO.read(new File("src/projlab/map/ZPM.png"));
 				
 		view.drawTile(x, y, img);
 	}

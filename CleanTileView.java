@@ -8,11 +8,13 @@ import javax.imageio.ImageIO;
 
 public class CleanTileView {
 	View view;
+	static Image img;
 	public CleanTileView(View v){
 		view = v;
 	}
 	public void drawCleanTile(int x, int y) throws IOException{
-		Image img = ImageIO.read(new File("src/projlab/map/cleantile.png"));
+		if(img == null)
+			img = ImageIO.read(new File("src/projlab/map/cleantile.png"));
 				
 		view.drawTile(x, y, img);
 	}

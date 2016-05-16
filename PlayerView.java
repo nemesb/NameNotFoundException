@@ -7,18 +7,30 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class PlayerView {
-	View view;
+	View view;	
+	Image img1 = null;
+	Image img2 = null;
 	public PlayerView(View v){
 		view = v;
 	}
-	public void drawPlayer(int x, int y, boolean o) throws IOException{
-		Image img;
-		
-		if(o)
-			img = ImageIO.read(new File("src/projlab/map/Oneill_left.png"));	
-		else
-			img = ImageIO.read(new File("src/projlab/map/jaffa_left.png"));
-		
-		view.drawTile(x, y, img);
+	public void drawPlayer(int x, int y, boolean o, int direction) throws IOException{		
+		if(o){			
+			switch(direction){
+			case 0: img1 = ImageIO.read(new File("src/projlab/map/Oneill_left.png")); break; 
+			case 1: img1 = ImageIO.read(new File("src/projlab/map/Oneill_up.png")); break; 
+			case 2: img1 = ImageIO.read(new File("src/projlab/map/Oneill_right.png")); break;
+			case 3: img1 = ImageIO.read(new File("src/projlab/map/Oneill_down.png")); break; 
+			default: break;
+			}			
+				view.drawTile(x, y, img1);
+		}				
+		else{
+			switch(direction){
+			case 0: img2 = ImageIO.read(new File("src/projlab/map/jaffa_left.png")); break; 			
+			case 2: img2 = ImageIO.read(new File("src/projlab/map/jaffa_right.png")); break;
+			default: break;
+			}			
+				view.drawTile(x, y, img2);
+		}
 	}
 }

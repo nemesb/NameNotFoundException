@@ -8,12 +8,13 @@ import javax.imageio.ImageIO;
 
 public class WallView {
 	View view;
+	static Image img;
 	public WallView(View v){
 		view = v;
 	}
 	public void drawWall(int x, int y) throws IOException{
-		Image img = ImageIO.read(new File("src/projlab/map/Wall.png"));
-				
+		if(img == null)
+			img = ImageIO.read(new File("src/projlab/map/Wall.png"));				
 		view.drawTile(x, y, img);
 	}
 }

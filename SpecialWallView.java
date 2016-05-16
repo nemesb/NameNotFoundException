@@ -8,11 +8,13 @@ import javax.imageio.ImageIO;
 
 public class SpecialWallView {
 	View view;
+	Image img;
 	public SpecialWallView(View v){
 		view = v;
 	}
 	public void drawSpecialWall(int x, int y) throws IOException{
-		Image img = ImageIO.read(new File("src/projlab/map/specialwall.png"));
+		if (img == null)
+			img = ImageIO.read(new File("src/projlab/map/specialwall.png"));
 				
 		view.drawTile(x, y, img);
 	}

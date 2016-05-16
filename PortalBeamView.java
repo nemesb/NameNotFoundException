@@ -8,11 +8,14 @@ import javax.imageio.ImageIO;
 
 public class PortalBeamView {
 	View view;
+	Image img;
 	public PortalBeamView(View v){
 		view = v;
 	}
 	public void drawBeam(int x, int y, String color, int direction) throws IOException{
-		Image img = null;
+		if(img == null){
+			
+		}
 		boolean hor = direction % 2 == 0;
 		switch(color){
 		case "red": 
