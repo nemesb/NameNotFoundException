@@ -28,7 +28,7 @@ public class Game {
 	PortalBeamView PBV = new PortalBeamView(view);	
 	ReplicatorView RV = new ReplicatorView(view);
 	ZPMView ZV = new ZPMView(view);
-	int pDirection = -1;
+	int pDirection = -1; // feljegyezzük a játékos pozícióját
 	
 	
 	public void run() throws FileNotFoundException{ //A játékot készíti elő. Létrehozza az ActionControllert.
@@ -254,18 +254,8 @@ public class Game {
 	    String temp=null;
 	    System.out.print("Add meg, hogy consol-ra vagy fájlba szeretnél írni (0:consol, 1:fájl): ");
 	    Scanner scanWhere = new Scanner(System.in);
-	    toFile=scanWhere.nextInt();
+	    toFile=scanWhere.nextInt();	    
 	    
-	    //JFrame frame = buildFrame();
-	    
-	    /*szálak indítása*/
-	    /*ONeillThread colonel = new ONeillThread();
-	    Thread player1 = new Thread(colonel);
-	    JaffaThread jaffa = new JaffaThread();
-	    Thread player2 = new Thread(jaffa);
-	    
-	    player1.start();
-	    player2.start();*/
 	    
 	    try {
 			drawWalls();
@@ -284,32 +274,17 @@ public class Game {
 	    viewthread.start();
 	    ReplicatorThread RT = new ReplicatorThread();
 	    Thread repthread = new Thread(RT);
-	    repthread.start();
-	    
-		//do{
-			/* Kirajzolás lock*/		    
-			/*try {
-				Output();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			//System.out.print("\nAdj meg egy parancsot: ");
-			//temp=scanner.next();			
-			
-			//ONeill(temp);
-			//Jaffa(temp);			
-		//}while(!(temp.equals("exit")));
+	    repthread.start();	    
+		
 	}	
 	
-	
+	// Adott koordinátán lévő mezőt kirajzoljuk
 	private void drawTile(int i, int j) throws IOException{
 		Visitable v = ac.getTile(i, j);
 		String classname = v.getClass()
 				.getName()
 				.substring(8);
-		switch(classname){
-			//case "Wall": new WallView(view).drawWall(i, j); break;
+		switch(classname){			
 			case "CleanTile": 
 				CTV.drawCleanTile(i, j);
 				if(((CleanTile) v).getZPM())
@@ -323,6 +298,8 @@ public class Game {
 			case "SpecialWall": SWV.drawSpecialWall(i, j); break;
 		}
 	}
+	
+	// Csak a falakat rajzoljuk ki, egyszer hívódik meg a játék folyamán összesen
 	private void drawWalls() throws IOException{
 		 for(int i = 0; i < ac.getRows();i++){
 		    	for(int j = 0; j < ac.getColumns();j++){
@@ -337,18 +314,14 @@ public class Game {
 		    }
 	}
 	
+	// Megjelenítéssel foglalkozó szál hívogatja folyamatosan, megjeleníti a pályát
+	
 	private void Output() throws IOException{
-		//System.out.println("\n");
-	    //if(toFile==1)
-	    //	ac.writeMap();
-	    //else
-	    //	ac.getMap();
-	    //pálya		
-		
+			
 		int oRow = ac.getPlayer(0).getRow();
-		int oColumn = ac.getPlayer(0).getColumn();
+		int oColumn = ac.getPlayer(0).getColumn();		
 		
-		
+		// Mezők kirajzolása, ha visitor áll rajta, nem bántjuk (nem rajzoljuk ki újra)
 	    for(int i = 0; i < ac.getRows();i++){
 	    	for(int j = 0; j < ac.getColumns();j++){
 	    		if(i != oRow || j != oColumn){
@@ -359,7 +332,8 @@ public class Game {
 	    		}  	    					
 	    	}
 	    }  
-	    //playerek
+	    
+	    //playerek, ha nem változik a játékos iránya, nem rajzoljuk ki újra a mezőt, amin áll
 	    for(int i = 0; i < 2; i++){
 	    	Player p = ac.getPlayer(i);
 	    	if (p == null)
@@ -392,10 +366,7 @@ public class Game {
 	    //replikátor
 	    if(ac.replicatorIsAlive){
 	    	RV.drawReplicator(ac.getReplicatorX(), ac.getReplicatorY());
-	    }
-	    
-	    
-		//System.out.print("\nAdj meg egy parancsot: ");
+	    }		
 	}
 	
 	private void ONeill(String temp){		
@@ -470,6 +441,7 @@ public class Game {
 	}
 
 
+	// Replicátor mozgatásáért felel
 	private class ReplicatorThread implements Runnable{
 
 		@Override
@@ -487,6 +459,7 @@ public class Game {
 		
 	}
 	
+	//Megjelenítésért felel
 	private class ViewThread implements Runnable{
 
 		@Override
@@ -510,6 +483,7 @@ public class Game {
 		
 	}
 	
+	// unused
 	private class ONeillThread implements Runnable{
 		@Override
 		public void run() {	
@@ -521,7 +495,7 @@ public class Game {
 			}
 		}		
 	}
-	
+	 // unused
 	private class JaffaThread implements Runnable{
 
 		@Override
@@ -535,6 +509,7 @@ public class Game {
 		}		
 	}	
 
+	// Key listener, figyeli a billentyűzetet, jobban is lehetne implementálni, optimalizálásra szorul
 	class MKeyListener extends KeyAdapter {
 
 	    @Override
